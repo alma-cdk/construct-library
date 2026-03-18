@@ -1,5 +1,5 @@
 import { Duration } from 'aws-cdk-lib';
-import { TextFile, awscdk, YamlFile } from 'projen';
+import { TextFile, cdk, YamlFile } from 'projen';
 import { PnpmWorkspaceSpecification } from './pnpm-workspace-schema';
 
 export interface NodeConfigOptions {
@@ -10,7 +10,7 @@ export class NodeConfig {
   /**
    * @param project - The CDK construct library project; must expose `workflowNodeVersion` (e.g. AlmaCdkConstructLibrary).
    */
-  constructor(project: awscdk.AwsCdkConstructLibrary & NodeConfigOptions) {
+  constructor(project: cdk.JsiiProject & NodeConfigOptions) {
     new TextFile(project, '.nvmrc', {
       lines: [project.workflowNodeVersion],
     });

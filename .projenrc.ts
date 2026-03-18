@@ -1,6 +1,6 @@
 import { cdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
-// import { NodeConfig } from './src/NodeConfig';
+import { NodeConfig, NodeConfigOptions } from './src/NodeConfig';
 
 const CDK_VERSION = '2.220.0';
 const JSII_VERSION = '~5.9.0';
@@ -53,7 +53,7 @@ project.addTask('format', {
   exec: 'prettier --write .',
 });
 
-// new NodeConfig(project);
+new NodeConfig({ ...project, workflowNodeVersion: '24.10.0' } as cdk.JsiiProject & NodeConfigOptions); // TODO fix
 
 // project.addTask("generate:pnpm-workspace-types", {
 //   description:

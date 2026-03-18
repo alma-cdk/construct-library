@@ -59,4 +59,6 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
+!/.nvmrc
+!/pnpm-workspace.yaml
 !/.projenrc.ts
