@@ -30,6 +30,15 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
+.DS_Store
+/examples/**/cdk.context.json
+/examples/**/node_modules
+/examples/**/cdk.out
+/examples/**/.git
+TODO.md
+.scannerwork/
+**/*.drawio.bkp
+**/*.afdesign~lock~
 /test-reports/
 junit.xml
 /coverage/
