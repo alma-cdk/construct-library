@@ -2,7 +2,7 @@ import { cdk } from "projen";
 import {
   almaCdkConstructLibraryOptionsSchema,
   branchOptionsSchema,
-} from "../../../AlmaCdkConstructLibrary/schemas/almaCdkConstructLibraryOptions";
+} from "../../src/schemas/almaCdkConstructLibraryOptions";
 
 const validBaseOptions = {
   stability: cdk.Stability.STABLE,

@@ -1,4 +1,4 @@
-import { repositoryUrlSchema } from "../../../AlmaCdkConstructLibrary/schemas/repositoryUrl";
+import { repositoryUrlSchema } from "../../src/schemas/repositoryUrl";
 
 describe("repositoryUrlSchema", () => {
   it("accepts valid GitHub repository URLs", () => {

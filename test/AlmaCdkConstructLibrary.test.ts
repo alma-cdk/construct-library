@@ -1,6 +1,6 @@
 import { cdk } from "projen";
 import { Testing } from "projen/lib/testing";
-import { AlmaCdkConstructLibrary } from "../../AlmaCdkConstructLibrary/AlmaCdkConstructLibrary";
+import { AlmaCdkConstructLibrary } from "../src/AlmaCdkConstructLibrary";
 
 test("snapshot", () => {
   const project = new AlmaCdkConstructLibrary({

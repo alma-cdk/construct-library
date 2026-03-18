@@ -1,5 +1,4 @@
-export class Hello {
-  public sayHello() {
-    return 'hello, world!';
-  }
-}
+export {
+  AlmaCdkConstructLibrary,
+  type AlmaCdkConstructLibraryOptions,
+} from "./AlmaCdkConstructLibrary";

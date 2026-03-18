@@ -1,7 +1,7 @@
 import {
   nameSchema,
   parseScopedPackageName,
-} from "../../../AlmaCdkConstructLibrary/schemas/name";
+} from "../../src/schemas/name";
 
 describe("nameSchema", () => {
   it("accepts valid scoped package names", () => {
