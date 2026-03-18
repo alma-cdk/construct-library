@@ -2,6 +2,7 @@ import { cdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
 // import { NodeConfig } from './src/NodeConfig';
 
+const CDK_VERSION = '2.220.0';
 const JSII_VERSION = '~5.9.0';
 const JEST_VERSION = '^30';
 
@@ -25,17 +26,21 @@ const project = new cdk.JsiiProject({
   },
 
   gitignore: [
-    ".DS_Store",
-    "/examples/**/cdk.context.json",
-    "/examples/**/node_modules",
-    "/examples/**/cdk.out",
-    "/examples/**/.git",
-    "TODO.md",
-    ".scannerwork/",
-    "**/*.drawio.bkp",
-    "**/*.afdesign~lock~",
+    '.DS_Store',
+    '/examples/**/cdk.context.json',
+    '/examples/**/node_modules',
+    '/examples/**/cdk.out',
+    '/examples/**/.git',
+    'TODO.md',
+    '.scannerwork/',
+    '**/*.drawio.bkp',
+    '**/*.afdesign~lock~',
   ],
 });
+
+project.addDeps('projen');
+project.addDeps(`aws-cdk-lib@^${CDK_VERSION}`);
+// project.addPeerDeps('aws-cdk-lib');
 
 project.addDevDeps('typescript@^5.9'); // Defaults to very old typescript@4.9
 project.addDevDeps('@types/semver@^7');

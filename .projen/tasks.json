@@ -298,7 +298,7 @@
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @stylistic/eslint-plugin @types/jest @types/node @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii json-schema-to-typescript projen ts-jest ts-node typescript semver zod"
+          "exec": "pnpm update @stylistic/eslint-plugin @types/jest @types/node @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version constructs eslint-import-resolver-typescript eslint-plugin-import eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii json-schema-to-typescript projen ts-jest ts-node typescript semver zod aws-cdk-lib"
         },
         {
           "exec": "pnpm exec projen"

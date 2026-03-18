@@ -1,8 +1,8 @@
-import { awscdk, cdk } from "projen";
-import { z } from "zod";
-import { nameSchema } from "./name";
-import { repositoryUrlSchema } from "./repositoryUrl";
-import semver from "semver";
+import { awscdk, cdk } from 'projen';
+import semver from 'semver';
+import { z } from 'zod';
+import { nameSchema } from './name';
+import { repositoryUrlSchema } from './repositoryUrl';
 
 /** Positive integer (≥ 1) */
 const positiveInteger = z.number().int().positive();
@@ -13,7 +13,7 @@ const semverSchema = z.string().refine(
     const coerced = semver.coerce(s);
     return coerced != null && semver.valid(coerced) != null;
   },
-  { message: "Must be a valid semver or coercible to one" },
+  { message: 'Must be a valid semver or coercible to one' },
 );
 
 function validateNodeVersionOrder(opts: {
@@ -59,12 +59,12 @@ export const almaCdkConstructLibraryOptionsSchema = z
     deps: z.array(z.string()).optional(),
     devDeps: z.array(z.string()).optional(),
     bundledDeps: z.array(z.string()).optional(),
-    minNodeVersion: semverSchema.default("20"),
-    workflowNodeVersion: semverSchema.default("24"),
-    maxNodeVersion: semverSchema.default("24"),
+    minNodeVersion: semverSchema.default('20'),
+    workflowNodeVersion: semverSchema.default('24'),
+    maxNodeVersion: semverSchema.default('24'),
   })
   .refine(validateNodeVersionOrder, {
-    message: "Node versions must satisfy min <= workflow <= max",
+    message: 'Node versions must satisfy min <= workflow <= max',
   }) satisfies z.ZodType<Partial<awscdk.AwsCdkConstructLibraryOptions>>;
 
 export type AlmaCdkConstructLibraryOptions = z.input<
