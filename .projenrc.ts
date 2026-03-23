@@ -36,7 +36,7 @@ const project = new cdk.JsiiProject({
     'TODO.md',
     '.scannerwork/',
     '**/*.drawio.bkp',
-    '**/*.afdesign~lock~',
+    '**/*~lock~',
   ],
 
   peerDeps: ['constructs', 'projen'],

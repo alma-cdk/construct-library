@@ -38,7 +38,7 @@ jspm_packages/
 TODO.md
 .scannerwork/
 **/*.drawio.bkp
-**/*.afdesign~lock~
+**/*~lock~
 /test-reports/
 junit.xml
 /coverage/
