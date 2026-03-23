@@ -18,6 +18,7 @@ export class NodeConfig {
     new YamlFile(project, 'pnpm-workspace.yaml', {
       obj: {
         minimumReleaseAge: daysToMinutes(3),
+        minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
         trustPolicy: 'no-downgrade',
         trustPolicyIgnoreAfter: daysToMinutes(14),
         trustPolicyExclude: ['jsii@5.9.26'],
