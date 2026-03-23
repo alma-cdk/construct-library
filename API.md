@@ -1616,6 +1616,7 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.deps">deps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.devDeps">devDeps</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.keywords">keywords</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseBranches">releaseBranches</a></code> | <code>{[ key: string ]: projen.release.BranchOptions}</code> | *No description.* |
@@ -1718,6 +1719,16 @@ public readonly deps: string[];
 
 ```typescript
 public readonly devDeps: string[];
+```
+
+- *Type:* string[]
+
+---
+
+##### `keywords`<sup>Optional</sup> <a name="keywords" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.keywords"></a>
+
+```typescript
+public readonly keywords: string[];
 ```
 
 - *Type:* string[]

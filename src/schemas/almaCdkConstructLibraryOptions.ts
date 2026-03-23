@@ -56,6 +56,7 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly authorAddress: string;
   readonly name: string;
   readonly description: string;
+  readonly keywords?: string[];
   readonly repositoryUrl: string;
   readonly releaseBranches?: Record<string, BranchOptions>;
   readonly releaseEnvironment?: string;
@@ -77,6 +78,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     authorAddress: z.email(),
     name: nameSchema,
     description: z.string(),
+    keywords: z.array(z.string()).optional(),
     repositoryUrl: repositoryUrlSchema,
     releaseBranches: z.record(z.string(), branchOptionsSchema).optional(),
     releaseEnvironment: z.string(),

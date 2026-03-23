@@ -53,3 +53,7 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
 
 6. Ensure correct Node version: `fnm use`
 
+7. Remove old `node_modules`, `yarn.lock`, and/or `package-lock.json` files
+
+8. Reinstall everything with `pnpm install`
+
