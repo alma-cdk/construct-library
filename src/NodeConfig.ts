@@ -21,7 +21,7 @@ export class NodeConfig {
         minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
         trustPolicy: 'no-downgrade',
         trustPolicyIgnoreAfter: daysToMinutes(14),
-        trustPolicyExclude: ['jsii@5.9.26'],
+        trustPolicyExclude: ['jsii@5.9.33'],
         nodeLinker: 'hoisted', // required for bundled deps
         resolutionMode: 'highest',
         strictDepBuilds: true,
