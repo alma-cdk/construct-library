@@ -16,6 +16,7 @@
     "eject": "pnpm exec projen eject",
     "eslint": "pnpm exec projen eslint",
     "format": "pnpm exec projen format",
+    "generate:pnpm-workspace-types": "pnpm exec projen generate:pnpm-workspace-types",
     "package": "pnpm exec projen package",
     "package-all": "pnpm exec projen package-all",
     "package:js": "pnpm exec projen package:js",

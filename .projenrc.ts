@@ -58,11 +58,11 @@ project.addTask('format', {
 
 new NodeConfig({ ...project, workflowNodeVersion: '24.10.0' } as cdk.JsiiProject & NodeConfigOptions); // TODO fix
 
-// project.addTask("generate:pnpm-workspace-types", {
-//   description:
-//     "Download pnpm-workspace JSON schema and generate pnpm-workspace-schema.d.ts",
-//   exec: "ts-node scripts/generate-pnpm-workspace-types.ts",
-// });
+project.addTask('generate:pnpm-workspace-types', {
+  description:
+    'Download pnpm-workspace JSON schema and generate pnpm-workspace-schema.d.ts',
+  exec: 'ts-node scripts/generate-pnpm-workspace-types.ts',
+});
 
 
 project.synth();
