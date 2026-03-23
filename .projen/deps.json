@@ -119,6 +119,14 @@
       "type": "bundled"
     },
     {
+      "name": "constructs",
+      "type": "peer"
+    },
+    {
+      "name": "projen",
+      "type": "peer"
+    },
+    {
       "name": "aws-cdk-lib",
       "version": "^2.220.0",
       "type": "runtime"

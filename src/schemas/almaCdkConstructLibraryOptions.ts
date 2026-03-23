@@ -1,5 +1,6 @@
 import { awscdk, cdk } from 'projen';
-import semver from 'semver';
+import { BranchOptions } from 'projen/lib/release';
+import * as semver from 'semver';
 import { z } from 'zod';
 import { nameSchema } from './name';
 import { repositoryUrlSchema } from './repositoryUrl';
@@ -44,6 +45,29 @@ export const branchOptionsSchema = z.object({
   npmDistTag: z.string().optional(),
 });
 
+
+/**
+ * Needs to be manually typed due to JSII limitations.
+ */
+export interface AlmaCdkConstructLibraryOptions {
+  readonly stability: cdk.Stability;
+  readonly majorVersion: number;
+  readonly author: string;
+  readonly authorAddress: string;
+  readonly name: string;
+  readonly description: string;
+  readonly repositoryUrl: string;
+  readonly releaseBranches?: Record<string, BranchOptions>;
+  readonly releaseEnvironment?: string;
+  readonly deps?: string[];
+  readonly devDeps?: string[];
+  readonly bundledDeps?: string[];
+  readonly minNodeVersion?: string;
+  readonly workflowNodeVersion?: string;
+  readonly maxNodeVersion?: string;
+}
+
+
 /** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, scoped name, etc.). */
 export const almaCdkConstructLibraryOptionsSchema = z
   .object({
@@ -65,8 +89,5 @@ export const almaCdkConstructLibraryOptionsSchema = z
   })
   .refine(validateNodeVersionOrder, {
     message: 'Node versions must satisfy min <= workflow <= max',
-  }) satisfies z.ZodType<Partial<awscdk.AwsCdkConstructLibraryOptions>>;
+  }) satisfies z.ZodType<Partial<awscdk.AwsCdkConstructLibraryOptions>> & z.ZodType<AlmaCdkConstructLibraryOptions>;
 
-export type AlmaCdkConstructLibraryOptions = z.input<
-  typeof almaCdkConstructLibraryOptionsSchema
->;

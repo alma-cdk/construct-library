@@ -61,6 +61,10 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9"
   },
+  "peerDependencies": {
+    "constructs": "^10.5.1",
+    "projen": "^0.99.21"
+  },
   "dependencies": {
     "aws-cdk-lib": "^2.220.0",
     "projen": "^0.99.21",

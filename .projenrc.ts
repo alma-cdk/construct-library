@@ -39,8 +39,9 @@ const project = new cdk.JsiiProject({
 });
 
 project.addDeps('projen');
+project.addPeerDeps('projen');
+project.addPeerDeps('constructs');
 project.addDeps(`aws-cdk-lib@^${CDK_VERSION}`);
-// project.addPeerDeps('aws-cdk-lib');
 
 project.addDevDeps('typescript@^5.9'); // Defaults to very old typescript@4.9
 project.addDevDeps('@types/semver@^7');
