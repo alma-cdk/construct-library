@@ -21,9 +21,6 @@ importers:
         specifier: '4'
         version: 4.3.6
     devDependencies:
-      '@alma-cdk/construct-library':
-        specifier: 0.0.5
-        version: 0.0.5(constructs@10.0.0)(projen@0.99.21(constructs@10.0.0))
       '@stylistic/eslint-plugin':
         specifier: ^2
         version: 2.13.0(eslint@9.39.4)(typescript@5.9.3)
@@ -92,15 +89,6 @@ importers:
         version: 5.9.3
 
 packages:
-
-  '@alma-cdk/construct-library@0.0.5':
-    resolution: {integrity: sha512-OwRBs6tOwG+IsN0Da/U7yp5ENh1P9hh9Kb2TwDVIXgwmBS1AaIbagnGTVJA42kbIIdLM/nFQkufqX+xsZkz9lg==}
-    peerDependencies:
-      constructs: ^10.0.0
-      projen: ^0.99.21
-    bundledDependencies:
-      - semver
-      - zod
 
   '@apidevtools/json-schema-ref-parser@11.9.3':
     resolution: {integrity: sha512-60vepv88RwcJtSHrD6MjIL6Ta3SOYbgfnkHb+ppAVK+o9mXprRtulx7VlRl3lN3bbvysAfCS7WMVfhUYemB0IQ==}
@@ -3052,11 +3040,6 @@ packages:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
 snapshots:
-
-  '@alma-cdk/construct-library@0.0.5(constructs@10.0.0)(projen@0.99.21(constructs@10.0.0))':
-    dependencies:
-      constructs: 10.0.0
-      projen: 0.99.21(constructs@10.0.0)
 
   '@apidevtools/json-schema-ref-parser@11.9.3':
     dependencies:
