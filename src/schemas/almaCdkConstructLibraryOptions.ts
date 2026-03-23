@@ -8,14 +8,20 @@ import { repositoryUrlSchema } from './repositoryUrl';
 /** Positive integer (≥ 1) */
 const positiveInteger = z.number().int().positive();
 
-/** Semver string: validates that the value can be coerced into a valid semver (via semver.coerce + semver.valid). Returns the original string unchanged. */
-const semverSchema = z.string().refine(
-  (s) => {
-    const coerced = semver.coerce(s);
-    return coerced != null && semver.valid(coerced) != null;
-  },
-  { message: 'Must be a valid semver or coercible to one' },
-);
+/**
+ * Node/engine version: must coerce to valid semver. Output is `semver.coerce(...).version`
+ * so values are always valid for Projen (e.g. bare `20` → `20.0.0`).
+ */
+const nodeVersionStringSchema = z
+  .string()
+  .refine(
+    (s) => {
+      const coerced = semver.coerce(s);
+      return coerced != null && semver.valid(coerced) != null;
+    },
+    { message: 'Must be a valid semver or coercible to one' },
+  )
+  .transform((s) => semver.coerce(s)!.version);
 
 function validateNodeVersionOrder(opts: {
   minNodeVersion: string;
@@ -85,9 +91,9 @@ export const almaCdkConstructLibraryOptionsSchema = z
     deps: z.array(z.string()).optional(),
     devDeps: z.array(z.string()).optional(),
     bundledDeps: z.array(z.string()).optional(),
-    minNodeVersion: semverSchema.default('20'),
-    workflowNodeVersion: semverSchema.default('24'),
-    maxNodeVersion: semverSchema.default('24'),
+    minNodeVersion: nodeVersionStringSchema.default('20.0.0'),
+    workflowNodeVersion: nodeVersionStringSchema.default('24.14.0'),
+    maxNodeVersion: nodeVersionStringSchema.default('24.14.0'),
   })
   .refine(validateNodeVersionOrder, {
     message: 'Node versions must satisfy min <= workflow <= max',
