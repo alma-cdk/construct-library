@@ -45,7 +45,7 @@
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
     "commit-and-tag-version": "^12",
-    "constructs": "^10.0.0",
+    "constructs": "10.0.0",
     "eslint": "^9",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -63,11 +63,10 @@
     "typescript": "^5.9"
   },
   "peerDependencies": {
-    "constructs": "^10.5.1",
+    "constructs": "^10.0.0",
     "projen": "^0.99.21"
   },
   "dependencies": {
-    "aws-cdk-lib": "^2.220.0",
     "projen": "^0.99.21",
     "semver": "7",
     "zod": "4"

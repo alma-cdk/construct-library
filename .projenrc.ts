@@ -2,7 +2,7 @@ import { cdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
 import { NodeConfig, NodeConfigOptions } from './src/NodeConfig';
 
-const CDK_VERSION = '2.220.0';
+// const CDK_VERSION = '2.220.0';
 const JSII_VERSION = '~5.9.0';
 const JEST_VERSION = '^30';
 
@@ -26,7 +26,6 @@ const project = new cdk.JsiiProject({
     jestVersion: JEST_VERSION,
     updateSnapshot: UpdateSnapshot.NEVER,
   },
-
   gitignore: [
     '.DS_Store',
     '/examples/**/cdk.context.json',
@@ -39,18 +38,11 @@ const project = new cdk.JsiiProject({
     '**/*~lock~',
   ],
 
-  peerDeps: ['constructs', 'projen'],
+  deps: ['projen'],
+  peerDeps: ['constructs@^10.0.0', 'projen'],
+  bundledDeps: ['zod@4', 'semver@7'],
+  devDeps: ['typescript@^5.9', '@types/semver@^7', 'json-schema-to-typescript@^15'],
 });
-
-project.addDeps('projen');
-project.addDeps(`aws-cdk-lib@^${CDK_VERSION}`);
-
-project.addDevDeps('typescript@^5.9'); // Defaults to very old typescript@4.9
-project.addDevDeps('@types/semver@^7');
-project.addDevDeps('json-schema-to-typescript@^15');
-
-project.addBundledDeps('zod@4');
-project.addBundledDeps('semver@7');
 
 project.addTask('format', {
   exec: 'prettier --write .',

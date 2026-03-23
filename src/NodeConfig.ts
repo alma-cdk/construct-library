@@ -1,5 +1,5 @@
-import { Duration } from 'aws-cdk-lib';
 import { TextFile, cdk, YamlFile } from 'projen';
+import { daysToMinutes } from './daysToMinutes';
 import { PnpmWorkspaceSpecification } from './pnpm-workspace-schema';
 
 export interface NodeConfigOptions {
@@ -17,9 +17,9 @@ export class NodeConfig {
 
     new YamlFile(project, 'pnpm-workspace.yaml', {
       obj: {
-        minimumReleaseAge: Duration.days(3).toMinutes(),
+        minimumReleaseAge: daysToMinutes(3),
         trustPolicy: 'no-downgrade',
-        trustPolicyIgnoreAfter: Duration.days(14).toMinutes(),
+        trustPolicyIgnoreAfter: daysToMinutes(14),
         trustPolicyExclude: ['jsii@5.9.26'],
         nodeLinker: 'hoisted', // required for bundled deps
         resolutionMode: 'highest',

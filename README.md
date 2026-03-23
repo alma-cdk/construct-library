@@ -14,3 +14,42 @@
 </div>
 
 Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-your-own/) to manage all the `alma-cdk/*` CDK construts.
+
+## Installation
+
+1. Install with `npm`:
+    ```sh
+    npm i -D @alma-cdk/construct-library
+    ```
+
+2. Import the custom Projen project type:
+    ```diff
+    - import { AwsCdkConstructLibrary } from 'projen/lib/awscdk';
+    + import { AlmaCdkConstructLibrary } from "@alma-cdk/construct-library";
+    ```
+
+3. Initialize and define (at least) minimum required configuration:
+    ```ts
+    const project = new AlmaCdkConstructLibrary({
+      name: "<SCOPE>/<PACKAGE_NAME>",
+      author: "<AUTHOR_ORGANIZATION_NAME>",
+      authorAddress: "<AUTHOR_ORGANIZATION_EMAIL>",
+      description: "<PACKAGE_DESCRIPTION>",
+      repositoryUrl: "https://<GIT_URL>.git",
+      stability: cdk.Stability.EXPERIMENTAL, // or STABLE or DEPRECATED
+      majorVersion: 0, // 1, 2, ...
+      releaseEnvironment: "production",
+    });
+
+    project.synth();
+    ```
+
+4. Install `pnpm`
+
+5. Run `projen` with `pnpm`:
+    ```sh
+    pnpm exec projen
+    ```
+
+6. Ensure correct Node version: `fnm use`
+
