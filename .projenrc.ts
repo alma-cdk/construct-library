@@ -7,6 +7,8 @@ const JSII_VERSION = '~5.9.0';
 const JEST_VERSION = '^30';
 
 const project = new cdk.JsiiProject({
+  stability: cdk.Stability.EXPERIMENTAL,
+  majorVersion: 0,
   name: '@alma-cdk/construct-library',
   author: 'Alma Media',
   authorAddress: 'opensource@almamedia.dev',
@@ -36,11 +38,11 @@ const project = new cdk.JsiiProject({
     '**/*.drawio.bkp',
     '**/*.afdesign~lock~',
   ],
+
+  peerDeps: ['constructs', 'projen'],
 });
 
 project.addDeps('projen');
-project.addPeerDeps('projen');
-project.addPeerDeps('constructs');
 project.addDeps(`aws-cdk-lib@^${CDK_VERSION}`);
 
 project.addDevDeps('typescript@^5.9'); // Defaults to very old typescript@4.9

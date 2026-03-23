@@ -1628,6 +1628,8 @@ public readonly DEFAULT_TS_JEST_TRANFORM_PATTERN: string;
 
 ### AlmaCdkConstructLibraryOptions <a name="AlmaCdkConstructLibraryOptions" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions"></a>
 
+Needs to be manually typed due to JSII limitations.
+
 #### Initializer <a name="Initializer" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.Initializer"></a>
 
 ```typescript
