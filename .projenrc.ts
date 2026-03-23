@@ -39,7 +39,7 @@ const project = new cdk.JsiiProject({
   ],
 
   deps: ['projen'],
-  peerDeps: ['constructs@^10.0.0', 'projen@^0.99.21'],
+  peerDeps: ['constructs@^10.0.0', 'projen@^0.99.21', '@alma-cdk/construct-library'],
   bundledDeps: ['zod@4', 'semver@7'],
   devDeps: ['typescript@^5.9', '@types/semver@^7', 'json-schema-to-typescript@^15'],
 });

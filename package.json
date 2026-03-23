@@ -38,6 +38,7 @@
     "organization": false
   },
   "devDependencies": {
+    "@alma-cdk/construct-library": "0.0.5",
     "@stylistic/eslint-plugin": "^2",
     "@types/jest": "^30",
     "@types/node": "^25.5.0",
@@ -63,6 +64,7 @@
     "typescript": "^5.9"
   },
   "peerDependencies": {
+    "@alma-cdk/construct-library": "^0.0.5",
     "constructs": "^10.0.0",
     "projen": "^0.99.21"
   },
