@@ -940,11 +940,6 @@ dist/**/*
         "version": "^20",
       },
       {
-        "name": "@types/semver",
-        "type": "build",
-        "version": "^7",
-      },
-      {
         "name": "@typescript-eslint/eslint-plugin",
         "type": "build",
         "version": "^8",
@@ -1014,11 +1009,6 @@ dist/**/*
         "version": "~5.9.0",
       },
       {
-        "name": "json-schema-to-typescript",
-        "type": "build",
-        "version": "^15",
-      },
-      {
         "name": "prettier",
         "type": "build",
       },
@@ -1039,16 +1029,6 @@ dist/**/*
         "name": "typescript",
         "type": "build",
         "version": "^5.9",
-      },
-      {
-        "name": "semver",
-        "type": "bundled",
-        "version": "7",
-      },
-      {
-        "name": "zod",
-        "type": "bundled",
-        "version": "4",
       },
       {
         "name": "aws-cdk-lib",
@@ -1419,7 +1399,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
             "exec": "pnpm i --no-frozen-lockfile",
           },
           {
-            "exec": "pnpm update @types/jest @types/node @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii json-schema-to-typescript prettier projen ts-jest ts-node typescript semver zod aws-cdk-lib constructs",
+            "exec": "pnpm update @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint jest-junit jest jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii prettier projen ts-jest ts-node typescript aws-cdk-lib constructs",
           },
           {
             "exec": "pnpm exec projen",
@@ -1651,19 +1631,10 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "name": "Alma Media",
       "organization": true,
     },
-    "bundledDependencies": [
-      "semver",
-      "zod",
-    ],
-    "dependencies": {
-      "semver": "7",
-      "zod": "4",
-    },
     "description": "Opinionated CDK Project "Framework"",
     "devDependencies": {
       "@types/jest": "^30",
       "@types/node": "^20",
-      "@types/semver": "^7",
       "@typescript-eslint/eslint-plugin": "^8",
       "@typescript-eslint/parser": "^8",
       "aws-cdk-lib": "2.220.0",
@@ -1681,7 +1652,6 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "jsii-docgen": "^10.5.0",
       "jsii-pacmak": "*",
       "jsii-rosetta": "~5.9.0",
-      "json-schema-to-typescript": "^15",
       "prettier": "*",
       "projen": "*",
       "ts-jest": "^29",
