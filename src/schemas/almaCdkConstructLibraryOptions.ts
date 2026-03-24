@@ -9,19 +9,16 @@ import { repositoryUrlSchema } from './repositoryUrl';
 const positiveInteger = z.number().int().positive();
 
 /**
- * Node/engine version: must coerce to valid semver. Output is `semver.coerce(...).version`
- * so values are always valid for Projen (e.g. bare `20` → `20.0.0`).
+ * Node/engine version: must be valid semver or coercible to one (e.g. major-only `20`).
+ * Parsed output is the original string — no normalization (e.g. `20` stays `20`, not `20.0.0`).
  */
-const nodeVersionStringSchema = z
-  .string()
-  .refine(
-    (s) => {
-      const coerced = semver.coerce(s);
-      return coerced != null && semver.valid(coerced) != null;
-    },
-    { message: 'Must be a valid semver or coercible to one' },
-  )
-  .transform((s) => semver.coerce(s)!.version);
+const nodeVersionStringSchema = z.string().refine(
+  (s) => {
+    const coerced = semver.coerce(s);
+    return coerced != null && semver.valid(coerced) != null;
+  },
+  { message: 'Must be a valid semver or coercible to one' },
+);
 
 function validateNodeVersionOrder(opts: {
   minNodeVersion: string;
@@ -76,6 +73,9 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly sonarProjectPropertiesExtraLines?: string[];
 }
 
+const NODEJS_MIN_VERSION = '20';
+const NODEJS_MAX_VERSION = '24';
+
 
 /** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, scoped name, etc.). */
 export const almaCdkConstructLibraryOptionsSchema = z
@@ -93,9 +93,9 @@ export const almaCdkConstructLibraryOptionsSchema = z
     deps: z.array(z.string()).optional(),
     devDeps: z.array(z.string()).optional(),
     bundledDeps: z.array(z.string()).optional(),
-    minNodeVersion: nodeVersionStringSchema.default('20.0.0'),
-    workflowNodeVersion: nodeVersionStringSchema.default('24.14.0'),
-    maxNodeVersion: nodeVersionStringSchema.default('24.14.0'),
+    minNodeVersion: nodeVersionStringSchema.default(NODEJS_MIN_VERSION),
+    workflowNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
+    maxNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
     sonarProjectPropertiesExtraLines: z.array(z.string()).optional(),
   })
   .refine(validateNodeVersionOrder, {

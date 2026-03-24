@@ -55,16 +55,16 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.repositoryUrl).toBe(
       'https://github.com/alma-cdk/project.git',
     );
-    expect(result.minNodeVersion).toBe('20.0.0');
-    expect(result.workflowNodeVersion).toBe('24.14.0');
-    expect(result.maxNodeVersion).toBe('24.14.0');
+    expect(result.minNodeVersion).toBe('20');
+    expect(result.workflowNodeVersion).toBe('24');
+    expect(result.maxNodeVersion).toBe('24');
   });
 
   it('applies default Node versions when omitted', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse(validBaseOptions);
-    expect(result.minNodeVersion).toBe('20.0.0');
-    expect(result.workflowNodeVersion).toBe('24.14.0');
-    expect(result.maxNodeVersion).toBe('24.14.0');
+    expect(result.minNodeVersion).toBe('20');
+    expect(result.workflowNodeVersion).toBe('24');
+    expect(result.maxNodeVersion).toBe('24');
   });
 
   it('accepts custom Node versions when min <= workflow <= max', () => {
@@ -74,9 +74,21 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       workflowNodeVersion: '20',
       maxNodeVersion: '22',
     });
-    expect(result.minNodeVersion).toBe('18.0.0');
-    expect(result.workflowNodeVersion).toBe('20.0.0');
-    expect(result.maxNodeVersion).toBe('22.0.0');
+    expect(result.minNodeVersion).toBe('18');
+    expect(result.workflowNodeVersion).toBe('20');
+    expect(result.maxNodeVersion).toBe('22');
+  });
+
+  it('preserves full semver strings without normalizing', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      minNodeVersion: '20.0.0',
+      workflowNodeVersion: '24.14.0',
+      maxNodeVersion: '24.14.0',
+    });
+    expect(result.minNodeVersion).toBe('20.0.0');
+    expect(result.workflowNodeVersion).toBe('24.14.0');
+    expect(result.maxNodeVersion).toBe('24.14.0');
   });
 
   it('rejects when min > max', () => {
