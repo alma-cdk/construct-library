@@ -2,8 +2,16 @@ import { awscdk, TextFile } from 'projen';
 import { WorkflowSteps } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
 
+export interface SonarCloudReportWorkflowOptions {
+  /** Lines appended after the default `sonar-project.properties` content. */
+  readonly sonarProjectPropertiesExtraLines?: readonly string[];
+}
+
 export class SonarCloudReportWorkflow {
-  constructor(project: awscdk.AwsCdkConstructLibrary) {
+  constructor(
+    project: awscdk.AwsCdkConstructLibrary,
+    options?: SonarCloudReportWorkflowOptions,
+  ) {
     const sonarCloudReportWorkflow =
       project.github?.addWorkflow('sonarcloud-report');
 
@@ -44,21 +52,19 @@ export class SonarCloudReportWorkflow {
     /**
      * Sonarcloud properties file
      */
+    const sonarProjectPropertiesLines = [
+      'sonar.host.url=https://sonarcloud.io',
+      `sonar.projectKey=${project.name.replace('@', '').replace('/', '_')}`,
+      `sonar.organization=${project.name.replace('@', '').split('/')[0]}`,
+      'sonar.javascript.lcov.reportPaths=./coverage/lcov.info',
+      'sonar.sources=./src',
+      'sonar.tests=./test',
+      'sonar.test.inclusions=**/*.test.*',
+      ...(options?.sonarProjectPropertiesExtraLines ?? []),
+    ];
+
     new TextFile(project, 'sonar-project.properties', {
-      lines: [
-        'sonar.host.url=https://sonarcloud.io',
-        `sonar.projectKey=${project.name.replace('@', '').replace('/', '_')}`,
-        `sonar.organization=${project.name.replace('@', '').split('/')[0]}`,
-        'sonar.javascript.lcov.reportPaths=./coverage/lcov.info',
-        'sonar.sources=./src',
-        'sonar.tests=./test',
-        'sonar.test.inclusions=**/*.test.*',
-        'sonar.issue.ignore.multicriteria=e1,e2',
-        'sonar.issue.ignore.multicriteria.e1.ruleKey=typescript:S1874',
-        'sonar.issue.ignore.multicriteria.e1.resourceKey=src/smartstack/tags/*.ts',
-        'sonar.issue.ignore.multicriteria.e2.ruleKey=typescript:S1874',
-        'sonar.issue.ignore.multicriteria.e2.resourceKey=src/project/deprecation-warnings.ts',
-      ],
+      lines: sonarProjectPropertiesLines,
     });
   }
 }

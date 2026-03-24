@@ -72,6 +72,8 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly minNodeVersion?: string;
   readonly workflowNodeVersion?: string;
   readonly maxNodeVersion?: string;
+  /** Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). */
+  readonly sonarProjectPropertiesExtraLines?: string[];
 }
 
 
@@ -94,6 +96,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     minNodeVersion: nodeVersionStringSchema.default('20.0.0'),
     workflowNodeVersion: nodeVersionStringSchema.default('24.14.0'),
     maxNodeVersion: nodeVersionStringSchema.default('24.14.0'),
+    sonarProjectPropertiesExtraLines: z.array(z.string()).optional(),
   })
   .refine(validateNodeVersionOrder, {
     message: 'Node versions must satisfy min <= workflow <= max',

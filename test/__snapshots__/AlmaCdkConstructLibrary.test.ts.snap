@@ -1839,12 +1839,7 @@ sonar.organization=alma-cdk
 sonar.javascript.lcov.reportPaths=./coverage/lcov.info
 sonar.sources=./src
 sonar.tests=./test
-sonar.test.inclusions=**/*.test.*
-sonar.issue.ignore.multicriteria=e1,e2
-sonar.issue.ignore.multicriteria.e1.ruleKey=typescript:S1874
-sonar.issue.ignore.multicriteria.e1.resourceKey=src/smartstack/tags/*.ts
-sonar.issue.ignore.multicriteria.e2.ruleKey=typescript:S1874
-sonar.issue.ignore.multicriteria.e2.resourceKey=src/project/deprecation-warnings.ts",
+sonar.test.inclusions=**/*.test.*",
   "src/index.ts": "export class Hello {
   public sayHello() {
     return 'hello, world!';
@@ -1893,4 +1888,17 @@ test('hello', () => {
     ],
   },
 }
+`;
+
+exports[`sonar-project.properties appends sonarProjectPropertiesExtraLines 1`] = `
+"sonar.host.url=https://sonarcloud.io
+sonar.projectKey=alma-cdk_project
+sonar.organization=alma-cdk
+sonar.javascript.lcov.reportPaths=./coverage/lcov.info
+sonar.sources=./src
+sonar.tests=./test
+sonar.test.inclusions=**/*.test.*
+sonar.issue.ignore.multicriteria=e1
+sonar.issue.ignore.multicriteria.e1.ruleKey=typescript:S1874
+sonar.issue.ignore.multicriteria.e1.resourceKey=src/example/*.ts"
 `;

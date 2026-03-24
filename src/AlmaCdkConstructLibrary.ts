@@ -108,7 +108,10 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
       exec: 'ts-node scripts/generate-pnpm-workspace-types.ts',
     });
 
-    new SonarCloudReportWorkflow(this);
+    new SonarCloudReportWorkflow(this, {
+      sonarProjectPropertiesExtraLines:
+        validatedOptions.sonarProjectPropertiesExtraLines,
+    });
 
     new NodeConfig(this);
   }
