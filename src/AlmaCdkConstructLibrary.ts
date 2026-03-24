@@ -109,12 +109,6 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
       exec: 'prettier --write .',
     });
 
-    this.addTask('generate:pnpm-workspace-types', {
-      description:
-        'Download pnpm-workspace JSON schema and generate pnpm-workspace-schema.d.ts',
-      exec: 'ts-node scripts/generate-pnpm-workspace-types.ts',
-    });
-
     new SonarCloudReportWorkflow(this, {
       sonarProjectPropertiesExtraLines:
         validatedOptions.sonarProjectPropertiesExtraLines,

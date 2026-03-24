@@ -1240,15 +1240,6 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
           },
         ],
       },
-      "generate:pnpm-workspace-types": {
-        "description": "Download pnpm-workspace JSON schema and generate pnpm-workspace-schema.d.ts",
-        "name": "generate:pnpm-workspace-types",
-        "steps": [
-          {
-            "exec": "ts-node scripts/generate-pnpm-workspace-types.ts",
-          },
-        ],
-      },
       "install": {
         "description": "Install project dependencies and update lockfile (non-frozen)",
         "name": "install",
@@ -1793,7 +1784,6 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "eject": "pnpm exec projen eject",
       "eslint": "pnpm exec projen eslint",
       "format": "pnpm exec projen format",
-      "generate:pnpm-workspace-types": "pnpm exec projen generate:pnpm-workspace-types",
       "package": "pnpm exec projen package",
       "package-all": "pnpm exec projen package-all",
       "package:go": "pnpm exec projen package:go",
