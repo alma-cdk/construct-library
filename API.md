@@ -1621,6 +1621,7 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseBranches">releaseBranches</a></code> | <code>{[ key: string ]: projen.release.BranchOptions}</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseEnvironment">releaseEnvironment</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.sonarProjectPropertiesExtraLines">sonarProjectPropertiesExtraLines</a></code> | <code>string[]</code> | Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | *No description.* |
 
 ---
@@ -1772,6 +1773,18 @@ public readonly releaseEnvironment: string;
 ```
 
 - *Type:* string
+
+---
+
+##### `sonarProjectPropertiesExtraLines`<sup>Optional</sup> <a name="sonarProjectPropertiesExtraLines" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.sonarProjectPropertiesExtraLines"></a>
+
+```typescript
+public readonly sonarProjectPropertiesExtraLines: string[];
+```
+
+- *Type:* string[]
+
+Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores).
 
 ---
 
