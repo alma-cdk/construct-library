@@ -8,15 +8,17 @@ import { repositoryUrlSchema } from './repositoryUrl';
 /** Positive integer (≥ 1) */
 const positiveInteger = z.number().int().positive();
 
+function coerceValidSemver(value: string): semver.SemVer | null {
+  const coerced = semver.coerce(value);
+  return coerced != null && semver.valid(coerced) != null ? coerced : null;
+}
+
 /**
  * Node/engine version: must be valid semver or coercible to one (e.g. major-only `20`).
  * Parsed output is the original string — no normalization (e.g. `20` stays `20`, not `20.0.0`).
  */
 const nodeVersionStringSchema = z.string().refine(
-  (s) => {
-    const coerced = semver.coerce(s);
-    return coerced != null && semver.valid(coerced) != null;
-  },
+  (s) => coerceValidSemver(s) != null,
   { message: 'Must be a valid semver or coercible to one' },
 );
 
@@ -25,9 +27,9 @@ function validateNodeVersionOrder(opts: {
   maxNodeVersion: string;
   workflowNodeVersion: string;
 }): boolean {
-  const min = semver.coerce(opts.minNodeVersion);
-  const max = semver.coerce(opts.maxNodeVersion);
-  const workflow = semver.coerce(opts.workflowNodeVersion);
+  const min = coerceValidSemver(opts.minNodeVersion);
+  const max = coerceValidSemver(opts.maxNodeVersion);
+  const workflow = coerceValidSemver(opts.workflowNodeVersion);
   if (min == null || max == null || workflow == null) return true; // let field-level validation handle invalid semver
   return (
     semver.lte(min, max) &&
@@ -78,6 +80,8 @@ const NODEJS_MAX_VERSION = '24';
 
 
 /** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, scoped name, etc.). */
+// JSII cannot infer this schema shape cleanly, so we keep the runtime schema
+// and its public options interface aligned explicitly.
 export const almaCdkConstructLibraryOptionsSchema = z
   .object({
     stability: z.enum(cdk.Stability),

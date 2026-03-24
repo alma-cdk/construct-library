@@ -2,7 +2,9 @@ import { cdk } from 'projen';
 import { Testing } from 'projen/lib/testing';
 import { AlmaCdkConstructLibrary } from '../src/AlmaCdkConstructLibrary';
 
-const baseLibraryOptions = {
+type LibraryOptions = ConstructorParameters<typeof AlmaCdkConstructLibrary>[0];
+
+const baseLibraryOptions: LibraryOptions = {
   stability: cdk.Stability.STABLE,
   majorVersion: 1,
   author: 'Alma Media',
@@ -11,12 +13,101 @@ const baseLibraryOptions = {
   description: 'Opinionated CDK Project "Framework"',
   repositoryUrl: 'https://github.com/alma-cdk/project.git',
   releaseEnvironment: 'production',
-} as const;
+};
+
+function synthProject(options: Partial<LibraryOptions> = {}) {
+  return Testing.synth(
+    new AlmaCdkConstructLibrary({
+      ...baseLibraryOptions,
+      ...options,
+    }),
+  );
+}
 
 test('snapshot', () => {
   const project = new AlmaCdkConstructLibrary({ ...baseLibraryOptions });
   const snapshot = Testing.synth(project);
   expect(snapshot).toMatchSnapshot();
+});
+
+test('constructor validates options before synthesis', () => {
+  expect(
+    () =>
+      new AlmaCdkConstructLibrary({
+        ...baseLibraryOptions,
+        name: 'invalid-name',
+      }),
+  ).toThrow();
+});
+
+test('.nvmrc uses workflowNodeVersion when provided', () => {
+  const snapshot = synthProject({
+    workflowNodeVersion: '22',
+  });
+
+  expect(snapshot['.nvmrc'].trim()).toBe('22');
+});
+
+test('package.json merges keywords case-insensitively', () => {
+  const snapshot = synthProject({
+    keywords: ['Custom', 'AWS', 'cdk'],
+  });
+  const packageJson = snapshot['package.json'] as {
+    keywords: string[];
+  };
+
+  expect(packageJson.keywords).toHaveLength(5);
+  expect(packageJson.keywords).toEqual(
+    expect.arrayContaining(['cdk', 'aws-cdk', 'awscdk', 'aws', 'Custom']),
+  );
+});
+
+test('package.json derives Python and Go publish metadata from package name', () => {
+  const snapshot = synthProject({
+    name: '@alma-cdk/my-hyphenated-package-name',
+    repositoryUrl:
+      'https://github.com/alma-cdk/my-hyphenated-package-name.git',
+  });
+  const packageJson = snapshot['package.json'] as {
+    jsii: {
+      targets: {
+        python: {
+          distName: string;
+          module: string;
+        };
+        go: {
+          moduleName: string;
+        };
+      };
+    };
+  };
+
+  expect(packageJson.jsii.targets.python.distName).toBe(
+    'alma-cdk.my-hyphenated-package-name',
+  );
+  expect(packageJson.jsii.targets.python.module).toBe(
+    'alma_cdk.my_hyphenated_package_name',
+  );
+  expect(packageJson.jsii.targets.go.moduleName).toBe(
+    'github.com/alma-cdk/my-hyphenated-package-name-go',
+  );
+});
+
+test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
+  const snapshot = synthProject();
+  const workspaceConfig = snapshot['pnpm-workspace.yaml'];
+
+  expect(workspaceConfig).toContain('minimumReleaseAge: 4320');
+  expect(workspaceConfig).toContain('trustPolicy: no-downgrade');
+  expect(workspaceConfig).toContain('nodeLinker: hoisted');
+});
+
+test('sonar-project.properties derives project coordinates from the scoped name', () => {
+  const snapshot = synthProject();
+  const sonarProjectProperties = snapshot['sonar-project.properties'];
+
+  expect(sonarProjectProperties).toContain('sonar.projectKey=alma-cdk_project');
+  expect(sonarProjectProperties).toContain('sonar.organization=alma-cdk');
 });
 
 test('sonar-project.properties appends sonarProjectPropertiesExtraLines', () => {

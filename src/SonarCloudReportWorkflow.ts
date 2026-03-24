@@ -1,10 +1,29 @@
 import { awscdk, TextFile } from 'projen';
 import { WorkflowSteps } from 'projen/lib/github';
 import { JobPermission } from 'projen/lib/github/workflows-model';
+import { parseScopedPackageName } from './schemas/name';
 
 export interface SonarCloudReportWorkflowOptions {
   /** Lines appended after the default `sonar-project.properties` content. */
   readonly sonarProjectPropertiesExtraLines?: readonly string[];
+}
+
+function buildSonarProjectPropertiesLines(
+  projectName: string,
+  extraLines: readonly string[] = [],
+): string[] {
+  const { scope, packageName } = parseScopedPackageName(projectName);
+
+  return [
+    'sonar.host.url=https://sonarcloud.io',
+    `sonar.projectKey=${scope}_${packageName}`,
+    `sonar.organization=${scope}`,
+    'sonar.javascript.lcov.reportPaths=./coverage/lcov.info',
+    'sonar.sources=./src',
+    'sonar.tests=./test',
+    'sonar.test.inclusions=**/*.test.*',
+    ...extraLines,
+  ];
 }
 
 export class SonarCloudReportWorkflow {
@@ -52,16 +71,10 @@ export class SonarCloudReportWorkflow {
     /**
      * Sonarcloud properties file
      */
-    const sonarProjectPropertiesLines = [
-      'sonar.host.url=https://sonarcloud.io',
-      `sonar.projectKey=${project.name.replace('@', '').replace('/', '_')}`,
-      `sonar.organization=${project.name.replace('@', '').split('/')[0]}`,
-      'sonar.javascript.lcov.reportPaths=./coverage/lcov.info',
-      'sonar.sources=./src',
-      'sonar.tests=./test',
-      'sonar.test.inclusions=**/*.test.*',
-      ...(options?.sonarProjectPropertiesExtraLines ?? []),
-    ];
+    const sonarProjectPropertiesLines = buildSonarProjectPropertiesLines(
+      project.name,
+      options?.sonarProjectPropertiesExtraLines,
+    );
 
     new TextFile(project, 'sonar-project.properties', {
       lines: sonarProjectPropertiesLines,

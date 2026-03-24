@@ -46,6 +46,15 @@ describe('branchOptionsSchema', () => {
   it('rejects non-integer majorVersion', () => {
     expect(() => branchOptionsSchema.parse({ majorVersion: 1.5 })).toThrow();
   });
+
+  it('rejects invalid optional version fields when provided', () => {
+    expect(() =>
+      branchOptionsSchema.parse({ majorVersion: 1, minMajorVersion: 0 }),
+    ).toThrow();
+    expect(() =>
+      branchOptionsSchema.parse({ majorVersion: 1, minorVersion: 1.5 }),
+    ).toThrow();
+  });
 });
 
 describe('almaCdkConstructLibraryOptionsSchema', () => {
@@ -62,6 +71,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
 
   it('applies default Node versions when omitted', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse(validBaseOptions);
+    expect(result.keywords).toEqual([]);
     expect(result.minNodeVersion).toBe('20');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('24');
@@ -132,6 +142,24 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     ).toThrow();
   });
 
+  it('rejects non-positive majorVersion', () => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        majorVersion: 0,
+      }),
+    ).toThrow();
+  });
+
+  it('rejects invalid stability', () => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        stability: 'invalid',
+      }),
+    ).toThrow();
+  });
+
   it('rejects invalid repositoryUrl', () => {
     expect(() =>
       almaCdkConstructLibraryOptionsSchema.parse({
@@ -171,5 +199,42 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       main: { majorVersion: 1 },
       beta: { majorVersion: 2, prerelease: 'beta' },
     });
+  });
+
+  it('rejects invalid nested releaseBranches values', () => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        releaseBranches: {
+          main: { majorVersion: 0 },
+        },
+      }),
+    ).toThrow();
+  });
+
+  it('preserves optional dependency arrays when provided', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      deps: ['constructs'],
+      devDeps: ['typescript'],
+      bundledDeps: ['zod'],
+    });
+
+    expect(result.deps).toEqual(['constructs']);
+    expect(result.devDeps).toEqual(['typescript']);
+    expect(result.bundledDeps).toEqual(['zod']);
+  });
+
+  it('preserves sonarProjectPropertiesExtraLines when provided', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      sonarProjectPropertiesExtraLines: [
+        'sonar.issue.ignore.multicriteria=e1',
+      ],
+    });
+
+    expect(result.sonarProjectPropertiesExtraLines).toEqual([
+      'sonar.issue.ignore.multicriteria=e1',
+    ]);
   });
 });
