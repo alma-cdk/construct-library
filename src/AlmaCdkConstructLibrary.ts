@@ -7,6 +7,7 @@ import {
 } from './schemas/almaCdkConstructLibraryOptions';
 import { parseScopedPackageName } from './schemas/name';
 import { SonarCloudReportWorkflow } from './SonarCloudReportWorkflow';
+import { uniqueKeywordsCaseInsensitive } from './uniqueKeywordsCaseInsensitive';
 
 export type { AlmaCdkConstructLibraryOptions } from './schemas/almaCdkConstructLibraryOptions';
 
@@ -37,7 +38,13 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
       npmTrustedPublishing: true,
       projenrcTs: true,
       jsiiVersion: JSII_VERSION,
-      keywords: ['cdk', 'aws-cdk', 'awscdk', 'aws'],
+      keywords: uniqueKeywordsCaseInsensitive([
+        'cdk',
+        'aws-cdk',
+        'awscdk',
+        'aws',
+        ...validatedOptions.keywords,
+      ]),
       jestOptions: {
         jestVersion: JEST_VERSION,
         updateSnapshot: UpdateSnapshot.NEVER,

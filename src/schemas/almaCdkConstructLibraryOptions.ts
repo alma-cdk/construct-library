@@ -86,7 +86,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     authorAddress: z.email(),
     name: nameSchema,
     description: z.string(),
-    keywords: z.array(z.string()).optional(),
+    keywords: z.array(z.string()).default([]),
     repositoryUrl: repositoryUrlSchema,
     releaseBranches: z.record(z.string(), branchOptionsSchema).optional(),
     releaseEnvironment: z.string(),
