@@ -22,11 +22,12 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
     npm i -D @alma-cdk/construct-library
     ```
 
-2. If existing project, install `projen@0.99.21` or newer
+2. If existing project, install `npm i -D projen@0.99.21` or newer
 
 2. Import the custom Projen project type:
     ```diff
     - import { AwsCdkConstructLibrary } from 'projen/lib/awscdk';
+    + import { cdk } from "projen";
     + import { AlmaCdkConstructLibrary } from "@alma-cdk/construct-library";
     ```
 
@@ -45,6 +46,9 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
 
     project.synth();
     ```
+
+
+4. Fnm use 24 
 
 4. Install `pnpm`
 

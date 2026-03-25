@@ -2,6 +2,7 @@ import { awscdk, cdk } from 'projen';
 import { BranchOptions } from 'projen/lib/release';
 import * as semver from 'semver';
 import { z } from 'zod';
+import type { PnpmWorkspaceSpecification } from '../pnpm-workspace-schema';
 import { nameSchema } from './name';
 import { repositoryUrlSchema } from './repositoryUrl';
 
@@ -20,6 +21,10 @@ function coerceValidSemver(value: string): semver.SemVer | null {
 const nodeVersionStringSchema = z.string().refine(
   (s) => coerceValidSemver(s) != null,
   { message: 'Must be a valid semver or coercible to one' },
+);
+const pnpmSettingsSchema = z.custom<PnpmWorkspaceSpecification>(
+  (value) => value != null && typeof value === 'object' && !Array.isArray(value),
+  { message: 'Must be an object' },
 );
 
 function validateNodeVersionOrder(opts: {
@@ -71,6 +76,7 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly minNodeVersion?: string;
   readonly workflowNodeVersion?: string;
   readonly maxNodeVersion?: string;
+  readonly pnpmSettings?: PnpmWorkspaceSpecification;
   /** Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). */
   readonly sonarProjectPropertiesExtraLines?: string[];
 }
@@ -100,6 +106,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     minNodeVersion: nodeVersionStringSchema.default(NODEJS_MIN_VERSION),
     workflowNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
     maxNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
+    pnpmSettings: pnpmSettingsSchema.optional(),
     sonarProjectPropertiesExtraLines: z.array(z.string()).optional(),
   })
   .refine(validateNodeVersionOrder, {

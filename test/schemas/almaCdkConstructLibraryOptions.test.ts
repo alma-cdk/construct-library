@@ -225,6 +225,25 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.bundledDeps).toEqual(['zod']);
   });
 
+  it('preserves pnpmSettings when provided', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      pnpmSettings: {
+        onlyBuiltDependencies: ['unrs-resolver'],
+        overrides: {
+          'ajv@^8': '^8.18.0',
+        },
+      },
+    });
+
+    expect(result.pnpmSettings).toEqual({
+      onlyBuiltDependencies: ['unrs-resolver'],
+      overrides: {
+        'ajv@^8': '^8.18.0',
+      },
+    });
+  });
+
   it('preserves sonarProjectPropertiesExtraLines when provided', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse({
       ...validBaseOptions,

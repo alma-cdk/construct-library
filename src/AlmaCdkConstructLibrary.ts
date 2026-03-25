@@ -121,6 +121,9 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
         validatedOptions.sonarProjectPropertiesExtraLines,
     });
 
-    new NodeConfig(this);
+    new NodeConfig(this, {
+      workflowNodeVersion: validatedOptions.workflowNodeVersion,
+      pnpmSettings: validatedOptions.pnpmSettings,
+    });
   }
 }

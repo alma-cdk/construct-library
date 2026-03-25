@@ -1,10 +1,13 @@
 import { cdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
-import { NodeConfig, NodeConfigOptions } from './src/NodeConfig';
+import { NodeConfig } from './src/NodeConfig';
 
 // const CDK_VERSION = '2.220.0';
 const JSII_VERSION = '~5.9.0';
 const JEST_VERSION = '^30';
+const MIN_NODE_VERSION = '20';
+const MAX_NODE_VERSION = '24';
+const WORKFLOW_NODE_VERSION = MAX_NODE_VERSION;
 
 const project = new cdk.JsiiProject({
   stability: cdk.Stability.EXPERIMENTAL,
@@ -42,13 +45,18 @@ const project = new cdk.JsiiProject({
   peerDeps: ['constructs@^10.0.0', 'projen@^0.99.21'],
   bundledDeps: ['zod@4', 'semver@7'],
   devDeps: ['typescript@^5.9', '@types/semver@^7', 'json-schema-to-typescript@^15'],
+  minNodeVersion: MIN_NODE_VERSION,
+  workflowNodeVersion: WORKFLOW_NODE_VERSION,
+  maxNodeVersion: MAX_NODE_VERSION,
 });
 
 project.addTask('format', {
   exec: 'prettier --write .',
 });
 
-new NodeConfig({ ...project, workflowNodeVersion: '24.10.0' } as cdk.JsiiProject & NodeConfigOptions); // TODO fix
+new NodeConfig(project, {
+  workflowNodeVersion: WORKFLOW_NODE_VERSION,
+});
 
 project.addTask('generate:pnpm-workspace-types', {
   description:
