@@ -230,18 +230,56 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       ...validBaseOptions,
       pnpmSettings: {
         onlyBuiltDependencies: ['unrs-resolver'],
+        linkWorkspacePackages: 'deep',
+        verifyDepsBeforeRun: false,
         overrides: {
           'ajv@^8': '^8.18.0',
+        },
+        packageExtensions: {
+          react: {
+            peerDependencies: {
+              '@types/react': '^19',
+            },
+          },
         },
       },
     });
 
     expect(result.pnpmSettings).toEqual({
       onlyBuiltDependencies: ['unrs-resolver'],
+      linkWorkspacePackages: 'deep',
+      verifyDepsBeforeRun: false,
       overrides: {
         'ajv@^8': '^8.18.0',
       },
+      packageExtensions: {
+        react: {
+          peerDependencies: {
+            '@types/react': '^19',
+          },
+        },
+      },
     });
+  });
+
+  it('rejects invalid pnpmSettings values', () => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        pnpmSettings: {
+          trustPolicy: 'invalid',
+        },
+      }),
+    ).toThrow();
+
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        pnpmSettings: {
+          imaginarySetting: true,
+        },
+      }),
+    ).toThrow();
   });
 
   it('preserves sonarProjectPropertiesExtraLines when provided', () => {

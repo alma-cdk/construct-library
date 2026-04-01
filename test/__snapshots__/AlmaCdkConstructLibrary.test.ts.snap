@@ -1787,11 +1787,9 @@ trustPolicyExclude:
 nodeLinker: hoisted
 resolutionMode: highest
 strictDepBuilds: true
-onlyBuiltDependencies:
-  - unrs-resolver
+onlyBuiltDependencies: []
 blockExoticSubdeps: true
-overrides:
-  ajv@^8: ^8.18.0
+overrides: {}
 ",
   "sonar-project.properties": "sonar.host.url=https://sonarcloud.io
 sonar.projectKey=alma-cdk_project

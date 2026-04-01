@@ -101,9 +101,7 @@ test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
   expect(workspaceConfig).toContain('trustPolicy: no-downgrade');
   expect(workspaceConfig).toContain('nodeLinker: hoisted');
   expect(workspaceConfig).toContain('onlyBuiltDependencies:');
-  expect(workspaceConfig).toContain('  - unrs-resolver');
   expect(workspaceConfig).toContain('overrides:');
-  expect(workspaceConfig).toContain('  ajv@^8: ^8.18.0');
 });
 
 test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
@@ -120,10 +118,8 @@ test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
 
   expect(workspaceConfig).toContain('minimumReleaseAge: 60');
   expect(workspaceConfig).toContain('onlyBuiltDependencies:');
-  expect(workspaceConfig).toContain('  - unrs-resolver');
   expect(workspaceConfig).toContain('  - esbuild');
   expect(workspaceConfig).toContain('overrides:');
-  expect(workspaceConfig).toContain('  ajv@^8: ^8.18.0');
   expect(workspaceConfig).toContain('  "@types/node": ^24');
 });
 

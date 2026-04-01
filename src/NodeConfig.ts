@@ -53,11 +53,9 @@ export class NodeConfig {
       nodeLinker: 'hoisted', // required for bundled deps
       resolutionMode: 'highest',
       strictDepBuilds: true,
-      onlyBuiltDependencies: ['unrs-resolver'], // allow unrs-resolver build scripts
+      onlyBuiltDependencies: [],
       blockExoticSubdeps: true,
-      overrides: {
-        'ajv@^8': '^8.18.0',
-      },
+      overrides: {},
     };
 
     const workspaceConfig = mergePnpmSettings(
