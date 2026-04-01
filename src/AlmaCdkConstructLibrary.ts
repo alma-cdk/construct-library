@@ -63,8 +63,10 @@ function buildPublishToGoOptions(repositoryUrl: string) {
 function buildAwsCdkConstructLibraryOptions(
   validatedOptions: ValidatedOptions,
 ): awscdk.AwsCdkConstructLibraryOptions {
+  const { golang, python, ...awsCdkConstructLibraryOptions } = validatedOptions;
+
   return {
-    ...validatedOptions,
+    ...awsCdkConstructLibraryOptions,
     // Package manager & projen
     projenCommand: 'pnpm exec projen',
     authorOrganization: true,
@@ -87,8 +89,12 @@ function buildAwsCdkConstructLibraryOptions(
       },
     },
     // Publishing
-    publishToPypi: buildPublishToPypiOptions(validatedOptions.name),
-    publishToGo: buildPublishToGoOptions(validatedOptions.repositoryUrl),
+    publishToPypi: python
+      ? buildPublishToPypiOptions(validatedOptions.name)
+      : undefined,
+    publishToGo: golang
+      ? buildPublishToGoOptions(validatedOptions.repositoryUrl)
+      : undefined,
     // CDK
     cdkVersion: CDK_VERSION,
     constructsVersion: CONSTRUCTS_VERSION,

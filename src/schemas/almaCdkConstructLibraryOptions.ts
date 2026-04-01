@@ -67,6 +67,7 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly repositoryUrl: string;
   readonly releaseBranches?: Record<string, BranchOptions>;
   readonly releaseEnvironment?: string;
+  readonly peerDeps?: string[];
   readonly deps?: string[];
   readonly devDeps?: string[];
   readonly bundledDeps?: string[];
@@ -76,7 +77,14 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly pnpmSettings?: PnpmWorkspaceSpecification;
   /** Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). */
   readonly sonarProjectPropertiesExtraLines?: string[];
+  readonly golang?: boolean;
+  readonly python?: boolean;
 }
+
+type SchemaCompatibleAwsCdkConstructLibraryOptions = Omit<
+  Partial<awscdk.AwsCdkConstructLibraryOptions>,
+  'python'
+>;
 
 const NODEJS_MIN_VERSION = '20';
 const NODEJS_MAX_VERSION = '24';
@@ -98,6 +106,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     repositoryUrl: repositoryUrlSchema,
     releaseBranches: z.record(z.string(), branchOptionsSchema).optional(),
     releaseEnvironment: z.string(),
+    peerDeps: z.array(z.string()).optional(),
     deps: z.array(z.string()).optional(),
     devDeps: z.array(z.string()).optional(),
     bundledDeps: z.array(z.string()).optional(),
@@ -106,8 +115,10 @@ export const almaCdkConstructLibraryOptionsSchema = z
     maxNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
     pnpmSettings: pnpmSettingsSchema.optional(),
     sonarProjectPropertiesExtraLines: z.array(z.string()).optional(),
+    golang: z.boolean().default(true),
+    python: z.boolean().default(true),
   })
   .refine(validateNodeVersionOrder, {
     message: 'Node versions must satisfy min <= workflow <= max',
-  }) satisfies z.ZodType<Partial<awscdk.AwsCdkConstructLibraryOptions>> & z.ZodType<AlmaCdkConstructLibraryOptions>;
+  }) satisfies z.ZodType<SchemaCompatibleAwsCdkConstructLibraryOptions> & z.ZodType<AlmaCdkConstructLibraryOptions>;
 

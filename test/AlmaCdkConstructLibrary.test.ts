@@ -93,6 +93,24 @@ test('package.json derives Python and Go publish metadata from package name', ()
   );
 });
 
+test('package.json omits disabled Python and Go publish targets', () => {
+  const snapshot = synthProject({
+    python: false,
+    golang: false,
+  });
+  const packageJson = snapshot['package.json'] as {
+    jsii: {
+      targets: {
+        python?: unknown;
+        go?: unknown;
+      };
+    };
+  };
+
+  expect(packageJson.jsii.targets.python).toBeUndefined();
+  expect(packageJson.jsii.targets.go).toBeUndefined();
+});
+
 test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
   const snapshot = synthProject();
   const workspaceConfig = snapshot['pnpm-workspace.yaml'];

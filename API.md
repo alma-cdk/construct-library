@@ -1616,10 +1616,13 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.deps">deps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.devDeps">devDeps</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.golang">golang</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.keywords">keywords</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.maxNodeVersion">maxNodeVersion</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.minNodeVersion">minNodeVersion</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.peerDeps">peerDeps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.pnpmSettings">pnpmSettings</a></code> | <code><a href="#@alma-cdk/construct-library.PnpmWorkspaceSpecification">PnpmWorkspaceSpecification</a></code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.python">python</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseBranches">releaseBranches</a></code> | <code>{[ key: string ]: projen.release.BranchOptions}</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseEnvironment">releaseEnvironment</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.sonarProjectPropertiesExtraLines">sonarProjectPropertiesExtraLines</a></code> | <code>string[]</code> | Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). |
@@ -1727,6 +1730,16 @@ public readonly devDeps: string[];
 
 ---
 
+##### `golang`<sup>Optional</sup> <a name="golang" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.golang"></a>
+
+```typescript
+public readonly golang: boolean;
+```
+
+- *Type:* boolean
+
+---
+
 ##### `keywords`<sup>Optional</sup> <a name="keywords" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.keywords"></a>
 
 ```typescript
@@ -1757,6 +1770,16 @@ public readonly minNodeVersion: string;
 
 ---
 
+##### `peerDeps`<sup>Optional</sup> <a name="peerDeps" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.peerDeps"></a>
+
+```typescript
+public readonly peerDeps: string[];
+```
+
+- *Type:* string[]
+
+---
+
 ##### `pnpmSettings`<sup>Optional</sup> <a name="pnpmSettings" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.pnpmSettings"></a>
 
 ```typescript
@@ -1764,6 +1787,16 @@ public readonly pnpmSettings: PnpmWorkspaceSpecification;
 ```
 
 - *Type:* <a href="#@alma-cdk/construct-library.PnpmWorkspaceSpecification">PnpmWorkspaceSpecification</a>
+
+---
+
+##### `python`<sup>Optional</sup> <a name="python" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.python"></a>
+
+```typescript
+public readonly python: boolean;
+```
+
+- *Type:* boolean
 
 ---
 
