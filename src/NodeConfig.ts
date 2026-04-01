@@ -53,7 +53,9 @@ export class NodeConfig {
       nodeLinker: 'hoisted', // required for bundled deps
       resolutionMode: 'highest',
       strictDepBuilds: true,
-      onlyBuiltDependencies: [],
+      onlyBuiltDependencies: [
+        'unrs-resolver', // needed by Jest
+      ],
       blockExoticSubdeps: true,
       overrides: {},
     };

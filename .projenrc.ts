@@ -56,9 +56,6 @@ project.addTask('format', {
 
 new NodeConfig(project, {
   workflowNodeVersion: WORKFLOW_NODE_VERSION,
-  pnpmSettings: {
-    onlyBuiltDependencies: ['unrs-resolver'],
-  },
 });
 
 project.addTask('generate:pnpm-workspace-types', {
