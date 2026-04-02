@@ -61,6 +61,7 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly majorVersion: number;
   readonly author: string;
   readonly authorAddress: string;
+  readonly authorOrganization?: boolean;
   readonly name: string;
   readonly description: string;
   readonly keywords?: string[];
@@ -100,6 +101,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     majorVersion: positiveInteger,
     author: z.string(),
     authorAddress: z.email(),
+    authorOrganization: z.boolean().default(true),
     name: nameSchema,
     description: z.string(),
     keywords: z.array(z.string()).default([]),

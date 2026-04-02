@@ -15,6 +15,7 @@ const project = new cdk.JsiiProject({
   name: '@alma-cdk/construct-library',
   author: 'Alma Media',
   authorAddress: 'opensource@almamedia.dev',
+  authorOrganization: true,
   description: 'Projen custom project to build Alma CDK construct libraries',
   repositoryUrl: 'https://github.com/alma-cdk/construct-library.git',
   defaultReleaseBranch: 'main',

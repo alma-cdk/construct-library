@@ -1613,6 +1613,7 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.name">name</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.repositoryUrl">repositoryUrl</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.stability">stability</a></code> | <code>projen.cdk.Stability</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.authorOrganization">authorOrganization</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.deps">deps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.devDeps">devDeps</a></code> | <code>string[]</code> | *No description.* |
@@ -1697,6 +1698,16 @@ public readonly stability: Stability;
 ```
 
 - *Type:* projen.cdk.Stability
+
+---
+
+##### `authorOrganization`<sup>Optional</sup> <a name="authorOrganization" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.authorOrganization"></a>
+
+```typescript
+public readonly authorOrganization: boolean;
+```
+
+- *Type:* boolean
 
 ---
 

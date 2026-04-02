@@ -35,7 +35,7 @@
   "author": {
     "name": "Alma Media",
     "email": "opensource@almamedia.dev",
-    "organization": false
+    "organization": true
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2",
