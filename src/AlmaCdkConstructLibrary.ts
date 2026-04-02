@@ -6,7 +6,7 @@ import {
   almaCdkConstructLibraryOptionsSchema,
   type AlmaCdkConstructLibraryOptions,
 } from './schemas/almaCdkConstructLibraryOptions';
-import { parseScopedPackageName } from './schemas/name';
+import { parsePackageName } from './schemas/name';
 import { SonarCloudReportWorkflow } from './SonarCloudReportWorkflow';
 import { uniqueKeywordsCaseInsensitive } from './uniqueKeywordsCaseInsensitive';
 
@@ -44,12 +44,17 @@ function buildKeywords(keywords: readonly string[]): string[] {
   return uniqueKeywordsCaseInsensitive([...DEFAULT_KEYWORDS, ...keywords]);
 }
 
+function toPythonModuleSegment(value: string): string {
+  return value.replace(/-/g, '_');
+}
+
 function buildPublishToPypiOptions(name: string) {
-  const { scope, packageName } = parseScopedPackageName(name);
+  const { scope, packageName } = parsePackageName(name);
+  const packagePath = scope == null ? [packageName] : [scope, packageName];
 
   return {
-    distName: `${scope}.${packageName}`,
-    module: `${scope.replace(/-/g, '_')}.${packageName.replace(/-/g, '_')}`,
+    distName: packagePath.join('.'),
+    module: packagePath.map(toPythonModuleSegment).join('.'),
     trustedPublishing: true,
   };
 }
@@ -123,6 +128,7 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
     });
 
     new SonarCloudReportWorkflow(this, {
+      repositoryUrl: validatedOptions.repositoryUrl,
       sonarProjectPropertiesExtraLines:
         validatedOptions.sonarProjectPropertiesExtraLines,
     });

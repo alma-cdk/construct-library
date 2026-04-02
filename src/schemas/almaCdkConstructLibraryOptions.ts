@@ -92,7 +92,7 @@ const NODEJS_MAX_VERSION = '24';
 const NODEJS_WORKFLOW_VERSION = NODEJS_MAX_VERSION;
 
 
-/** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, scoped name, etc.). */
+/** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, package name, etc.). */
 // JSII cannot infer this schema shape cleanly, so we keep the runtime schema
 // and its public options interface aligned explicitly.
 export const almaCdkConstructLibraryOptionsSchema = z

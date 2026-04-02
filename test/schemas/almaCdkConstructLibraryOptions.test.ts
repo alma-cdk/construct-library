@@ -133,11 +133,20 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     ).toThrow('Node versions must satisfy min <= workflow <= max');
   });
 
+  it('accepts valid unscoped name', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      name: 'project',
+    });
+
+    expect(result.name).toBe('project');
+  });
+
   it('rejects invalid name', () => {
     expect(() =>
       almaCdkConstructLibraryOptionsSchema.parse({
         ...validBaseOptions,
-        name: 'invalid-name',
+        name: 'invalid/name',
       }),
     ).toThrow();
   });
