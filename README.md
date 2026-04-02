@@ -34,7 +34,7 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
 3. Initialize and define (at least) minimum required configuration:
     ```ts
     const project = new AlmaCdkConstructLibrary({
-      name: "<SCOPE>/<PACKAGE_NAME>",
+      name: "@<SCOPE>/<PACKAGE_NAME>", // or "<PACKAGE_NAME>"
       author: "<AUTHOR_ORGANIZATION_NAME>",
       authorAddress: "<AUTHOR_ORGANIZATION_EMAIL>",
       description: "<PACKAGE_DESCRIPTION>",

@@ -35,7 +35,7 @@ test('constructor validates options before synthesis', () => {
     () =>
       new AlmaCdkConstructLibrary({
         ...baseLibraryOptions,
-        name: 'invalid-name',
+        name: 'invalid/name',
       }),
   ).toThrow();
 });
@@ -93,6 +93,37 @@ test('package.json derives Python and Go publish metadata from package name', ()
   );
 });
 
+test('package.json derives Python publish metadata from unscoped package name', () => {
+  const snapshot = synthProject({
+    name: 'my-hyphenated-package-name',
+    repositoryUrl:
+      'https://github.com/alma-cdk/my-hyphenated-package-name.git',
+  });
+  const packageJson = snapshot['package.json'] as {
+    jsii: {
+      targets: {
+        python: {
+          distName: string;
+          module: string;
+        };
+        go: {
+          moduleName: string;
+        };
+      };
+    };
+  };
+
+  expect(packageJson.jsii.targets.python.distName).toBe(
+    'my-hyphenated-package-name',
+  );
+  expect(packageJson.jsii.targets.python.module).toBe(
+    'my_hyphenated_package_name',
+  );
+  expect(packageJson.jsii.targets.go.moduleName).toBe(
+    'github.com/alma-cdk/my-hyphenated-package-name-go',
+  );
+});
+
 test('package.json omits disabled Python and Go publish targets', () => {
   const snapshot = synthProject({
     python: false,
@@ -143,6 +174,17 @@ test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
 
 test('sonar-project.properties derives project coordinates from the scoped name', () => {
   const snapshot = synthProject();
+  const sonarProjectProperties = snapshot['sonar-project.properties'];
+
+  expect(sonarProjectProperties).toContain('sonar.projectKey=alma-cdk_project');
+  expect(sonarProjectProperties).toContain('sonar.organization=alma-cdk');
+});
+
+test('sonar-project.properties derives organization from repository owner for unscoped names', () => {
+  const snapshot = synthProject({
+    name: 'project',
+    repositoryUrl: 'https://github.com/alma-cdk/project.git',
+  });
   const sonarProjectProperties = snapshot['sonar-project.properties'];
 
   expect(sonarProjectProperties).toContain('sonar.projectKey=alma-cdk_project');
