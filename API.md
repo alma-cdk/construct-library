@@ -1615,6 +1615,7 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.stability">stability</a></code> | <code>projen.cdk.Stability</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.authorOrganization">authorOrganization</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.deps">deps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.devDeps">devDeps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.golang">golang</a></code> | <code>boolean</code> | *No description.* |
@@ -1718,6 +1719,16 @@ public readonly bundledDeps: string[];
 ```
 
 - *Type:* string[]
+
+---
+
+##### `codeCov`<sup>Optional</sup> <a name="codeCov" id="@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.codeCov"></a>
+
+```typescript
+public readonly codeCov: boolean;
+```
+
+- *Type:* boolean
 
 ---
 

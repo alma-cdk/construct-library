@@ -72,6 +72,7 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly deps?: string[];
   readonly devDeps?: string[];
   readonly bundledDeps?: string[];
+  readonly codeCov?: boolean;
   readonly minNodeVersion?: string;
   readonly workflowNodeVersion?: string;
   readonly maxNodeVersion?: string;
@@ -112,6 +113,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     deps: z.array(z.string()).optional(),
     devDeps: z.array(z.string()).optional(),
     bundledDeps: z.array(z.string()).optional(),
+    codeCov: z.boolean().default(false),
     minNodeVersion: nodeVersionStringSchema.default(NODEJS_MIN_VERSION),
     workflowNodeVersion: nodeVersionStringSchema.default(NODEJS_WORKFLOW_VERSION),
     maxNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
