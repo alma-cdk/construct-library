@@ -124,6 +124,16 @@ test('package.json derives Python publish metadata from unscoped package name', 
   );
 });
 
+test('build workflow includes Codecov step when codeCov is enabled', () => {
+  const snapshot = synthProject({
+    codeCov: true,
+  });
+
+  expect(snapshot['.github/workflows/build.yml']).toContain(
+    'codecov/codecov-action@v5',
+  );
+});
+
 test('package.json omits disabled Python and Go publish targets', () => {
   const snapshot = synthProject({
     python: false,

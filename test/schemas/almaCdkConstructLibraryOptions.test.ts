@@ -64,6 +64,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.repositoryUrl).toBe(
       'https://github.com/alma-cdk/project.git',
     );
+    expect(result.codeCov).toBe(false);
     expect(result.minNodeVersion).toBe('20');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('24');
@@ -72,9 +73,19 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
   it('applies default Node versions when omitted', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse(validBaseOptions);
     expect(result.keywords).toEqual([]);
+    expect(result.codeCov).toBe(false);
     expect(result.minNodeVersion).toBe('20');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('24');
+  });
+
+  it('preserves codeCov when provided', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      codeCov: true,
+    });
+
+    expect(result.codeCov).toBe(true);
   });
 
   it('accepts custom Node versions when min <= workflow <= max', () => {
