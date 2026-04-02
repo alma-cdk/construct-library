@@ -121,6 +121,7 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
 
     this.workflowNodeVersion = validatedOptions.workflowNodeVersion;
 
+    this.addDevDeps('@alma-cdk/construct-library'); // Self-assignment required for the dependency not to be removed by Projen
     this.addDevDeps('typescript@^5.9'); // Defaults to very old typescript@4.9
 
     this.addTask('format', {
