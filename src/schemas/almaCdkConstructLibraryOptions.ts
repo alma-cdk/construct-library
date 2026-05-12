@@ -79,6 +79,8 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly pnpmSettings?: PnpmWorkspaceSpecification;
   /** Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). */
   readonly sonarProjectPropertiesExtraLines?: string[];
+  /** AWS CDK version for the generated library; when omitted, defaults to the exported `CDK_DEFAULT_VERSION` constant. */
+  readonly cdkVersion?: string;
   readonly golang?: boolean;
   readonly python?: boolean;
 }
@@ -91,6 +93,9 @@ type SchemaCompatibleAwsCdkConstructLibraryOptions = Omit<
 const NODEJS_MIN_VERSION = '20';
 const NODEJS_MAX_VERSION = '24';
 const NODEJS_WORKFLOW_VERSION = NODEJS_MAX_VERSION;
+
+/** Default AWS CDK version passed to projen when `cdkVersion` is omitted from options. */
+export const CDK_DEFAULT_VERSION = '2.220.0';
 
 
 /** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, package name, etc.). */
@@ -119,6 +124,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     maxNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
     pnpmSettings: pnpmSettingsSchema.optional(),
     sonarProjectPropertiesExtraLines: z.array(z.string()).optional(),
+    cdkVersion: z.string().default(CDK_DEFAULT_VERSION),
     golang: z.boolean().default(true),
     python: z.boolean().default(true),
   })

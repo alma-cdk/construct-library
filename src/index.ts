@@ -1,3 +1,4 @@
+export { CDK_DEFAULT_VERSION } from './schemas/almaCdkConstructLibraryOptions';
 export {
   AlmaCdkConstructLibrary,
   type AlmaCdkConstructLibraryOptions,

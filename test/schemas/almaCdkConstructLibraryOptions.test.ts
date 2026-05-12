@@ -2,6 +2,7 @@ import { cdk } from 'projen';
 import {
   almaCdkConstructLibraryOptionsSchema,
   branchOptionsSchema,
+  CDK_DEFAULT_VERSION,
 } from '../../src/schemas/almaCdkConstructLibraryOptions';
 
 const validBaseOptions = {
@@ -68,6 +69,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.minNodeVersion).toBe('20');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('24');
+    expect(result.cdkVersion).toBe(CDK_DEFAULT_VERSION);
   });
 
   it('applies default Node versions when omitted', () => {
@@ -86,6 +88,14 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     });
 
     expect(result.codeCov).toBe(true);
+  });
+
+  it('accepts cdkVersion override', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      cdkVersion: '2.100.0',
+    });
+    expect(result.cdkVersion).toBe('2.100.0');
   });
 
   it('accepts custom Node versions when min <= workflow <= max', () => {
