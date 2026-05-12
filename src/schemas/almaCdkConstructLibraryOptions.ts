@@ -81,6 +81,8 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly sonarProjectPropertiesExtraLines?: string[];
   /** AWS CDK version for the generated library (semver or coercible, same rules as Node version fields); when omitted, defaults to the exported `CDK_DEFAULT_VERSION` constant. */
   readonly cdkVersion?: string;
+  /** `constructs` library version for the generated project (semver or coercible, same rules as Node version fields); when omitted, defaults to the exported `CONSTRUCTS_DEFAULT_VERSION` constant. */
+  readonly constructsVersion?: string;
   readonly golang?: boolean;
   readonly python?: boolean;
 }
@@ -97,6 +99,8 @@ const NODEJS_WORKFLOW_VERSION = NODEJS_MAX_VERSION;
 /** Default AWS CDK version passed to projen when `cdkVersion` is omitted from options. */
 export const CDK_DEFAULT_VERSION = '2.220.0';
 
+/** Default `constructs` version passed to projen when `constructsVersion` is omitted from options. */
+export const CONSTRUCTS_DEFAULT_VERSION = '10.3.0';
 
 /** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, package name, etc.). */
 // JSII cannot infer this schema shape cleanly, so we keep the runtime schema
@@ -125,6 +129,7 @@ export const almaCdkConstructLibraryOptionsSchema = z
     pnpmSettings: pnpmSettingsSchema.optional(),
     sonarProjectPropertiesExtraLines: z.array(z.string()).optional(),
     cdkVersion: versionStringSchema.default(CDK_DEFAULT_VERSION),
+    constructsVersion: versionStringSchema.default(CONSTRUCTS_DEFAULT_VERSION),
     golang: z.boolean().default(true),
     python: z.boolean().default(true),
   })
