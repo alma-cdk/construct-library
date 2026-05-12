@@ -12,7 +12,6 @@ import { uniqueKeywordsCaseInsensitive } from './uniqueKeywordsCaseInsensitive';
 
 export type { AlmaCdkConstructLibraryOptions } from './schemas/almaCdkConstructLibraryOptions';
 
-const CONSTRUCTS_VERSION = '10.3.0';
 const JSII_VERSION = '~5.9.0';
 const JEST_VERSION = '^30';
 const DEFAULT_KEYWORDS = ['cdk', 'aws-cdk', 'awscdk', 'aws'] as const;
@@ -99,8 +98,6 @@ function buildAwsCdkConstructLibraryOptions(
     publishToGo: golang
       ? buildPublishToGoOptions(validatedOptions.repositoryUrl)
       : undefined,
-    // CDK
-    constructsVersion: CONSTRUCTS_VERSION,
     // Git & dev
     gitignore: [...DEFAULT_GITIGNORE_PATTERNS],
     tsconfigDev: {

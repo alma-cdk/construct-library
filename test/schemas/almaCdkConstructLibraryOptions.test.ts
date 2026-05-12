@@ -3,6 +3,7 @@ import {
   almaCdkConstructLibraryOptionsSchema,
   branchOptionsSchema,
   CDK_DEFAULT_VERSION,
+  CONSTRUCTS_DEFAULT_VERSION,
 } from '../../src/schemas/almaCdkConstructLibraryOptions';
 
 const validBaseOptions = {
@@ -70,6 +71,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('24');
     expect(result.cdkVersion).toBe(CDK_DEFAULT_VERSION);
+    expect(result.constructsVersion).toBe(CONSTRUCTS_DEFAULT_VERSION);
   });
 
   it('applies default Node versions when omitted', () => {
@@ -103,6 +105,23 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       almaCdkConstructLibraryOptionsSchema.parse({
         ...validBaseOptions,
         cdkVersion: 'not-semver',
+      }),
+    ).toThrow();
+  });
+
+  it('accepts constructsVersion override', () => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      constructsVersion: '10.4.2',
+    });
+    expect(result.constructsVersion).toBe('10.4.2');
+  });
+
+  it('rejects invalid semver for constructsVersion', () => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        constructsVersion: 'not-semver',
       }),
     ).toThrow();
   });
