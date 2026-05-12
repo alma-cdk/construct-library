@@ -16,10 +16,10 @@ function coerceValidSemver(value: string): semver.SemVer | null {
 }
 
 /**
- * Node/engine version: must be valid semver or coercible to one (e.g. major-only `20`).
+ * Version string: valid semver or coercible to one (e.g. major-only `20`, full `2.220.0`).
  * Parsed output is the original string — no normalization (e.g. `20` stays `20`, not `20.0.0`).
  */
-const nodeVersionStringSchema = z.string().refine(
+const versionStringSchema = z.string().refine(
   (s) => coerceValidSemver(s) != null,
   { message: 'Must be a valid semver or coercible to one' },
 );
@@ -79,6 +79,8 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly pnpmSettings?: PnpmWorkspaceSpecification;
   /** Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). */
   readonly sonarProjectPropertiesExtraLines?: string[];
+  /** AWS CDK version for the generated library (semver or coercible, same rules as Node version fields); when omitted, defaults to the exported `CDK_DEFAULT_VERSION` constant. */
+  readonly cdkVersion?: string;
   readonly golang?: boolean;
   readonly python?: boolean;
 }
@@ -91,6 +93,9 @@ type SchemaCompatibleAwsCdkConstructLibraryOptions = Omit<
 const NODEJS_MIN_VERSION = '20';
 const NODEJS_MAX_VERSION = '24';
 const NODEJS_WORKFLOW_VERSION = NODEJS_MAX_VERSION;
+
+/** Default AWS CDK version passed to projen when `cdkVersion` is omitted from options. */
+export const CDK_DEFAULT_VERSION = '2.220.0';
 
 
 /** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, package name, etc.). */
@@ -114,11 +119,12 @@ export const almaCdkConstructLibraryOptionsSchema = z
     devDeps: z.array(z.string()).optional(),
     bundledDeps: z.array(z.string()).optional(),
     codeCov: z.boolean().default(false),
-    minNodeVersion: nodeVersionStringSchema.default(NODEJS_MIN_VERSION),
-    workflowNodeVersion: nodeVersionStringSchema.default(NODEJS_WORKFLOW_VERSION),
-    maxNodeVersion: nodeVersionStringSchema.default(NODEJS_MAX_VERSION),
+    minNodeVersion: versionStringSchema.default(NODEJS_MIN_VERSION),
+    workflowNodeVersion: versionStringSchema.default(NODEJS_WORKFLOW_VERSION),
+    maxNodeVersion: versionStringSchema.default(NODEJS_MAX_VERSION),
     pnpmSettings: pnpmSettingsSchema.optional(),
     sonarProjectPropertiesExtraLines: z.array(z.string()).optional(),
+    cdkVersion: versionStringSchema.default(CDK_DEFAULT_VERSION),
     golang: z.boolean().default(true),
     python: z.boolean().default(true),
   })
