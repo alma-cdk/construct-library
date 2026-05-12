@@ -1615,7 +1615,7 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.stability">stability</a></code> | <code>projen.cdk.Stability</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.authorOrganization">authorOrganization</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.bundledDeps">bundledDeps</a></code> | <code>string[]</code> | *No description.* |
-| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | AWS CDK version for the generated library; |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.cdkVersion">cdkVersion</a></code> | <code>string</code> | AWS CDK version for the generated library (semver or coercible, same rules as Node version fields); |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.codeCov">codeCov</a></code> | <code>boolean</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.deps">deps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.devDeps">devDeps</a></code> | <code>string[]</code> | *No description.* |
@@ -1731,7 +1731,7 @@ public readonly cdkVersion: string;
 
 - *Type:* string
 
-AWS CDK version for the generated library;
+AWS CDK version for the generated library (semver or coercible, same rules as Node version fields);
 
 when omitted, defaults to the exported `CDK_DEFAULT_VERSION` constant.
 
