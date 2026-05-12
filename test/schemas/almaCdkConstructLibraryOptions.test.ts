@@ -98,6 +98,15 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.cdkVersion).toBe('2.100.0');
   });
 
+  it('rejects invalid semver for cdkVersion', () => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        cdkVersion: 'not-semver',
+      }),
+    ).toThrow();
+  });
+
   it('accepts custom Node versions when min <= workflow <= max', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse({
       ...validBaseOptions,
