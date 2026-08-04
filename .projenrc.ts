@@ -13,8 +13,8 @@ import {
 import { NodeConfig } from './src/NodeConfig';
 
 const project = new cdk.JsiiProject({
-  stability: cdk.Stability.EXPERIMENTAL,
-  majorVersion: 0,
+  stability: cdk.Stability.STABLE,
+  majorVersion: 1,
   name: '@alma-cdk/construct-library',
   author: 'Alma Media',
   authorAddress: 'opensource@almamedia.dev',

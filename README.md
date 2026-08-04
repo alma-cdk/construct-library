@@ -5,7 +5,7 @@
   <br/>
   </h1>
 
-  ![Stability: Experimental](https://img.shields.io/badge/stability-experimental-orange)
+  ![Stability: Stable](https://img.shields.io/badge/stability-stable-green)
   ![Versioning: SemVer 2.0.0](https://img.shields.io/badge/versioning-semver_2.0.0-blue)
   [![release](https://github.com/alma-cdk/construct-library/actions/workflows/release.yml/badge.svg)](https://github.com/alma-cdk/construct-library/actions/workflows/release.yml)
   [![Quality Gate Status](https://sonarcloud.io/api/construct-library/measure?project=alma-cdk_construct-library&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=alma-cdk_construct-library)
