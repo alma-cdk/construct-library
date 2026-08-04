@@ -289,7 +289,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse({
       ...validBaseOptions,
       pnpmSettings: {
-        onlyBuiltDependencies: ['unrs-resolver'],
+        allowBuilds: { 'unrs-resolver': true },
         linkWorkspacePackages: 'deep',
         verifyDepsBeforeRun: false,
         overrides: {
@@ -306,7 +306,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     });
 
     expect(result.pnpmSettings).toEqual({
-      onlyBuiltDependencies: ['unrs-resolver'],
+      allowBuilds: { 'unrs-resolver': true },
       linkWorkspacePackages: 'deep',
       verifyDepsBeforeRun: false,
       overrides: {

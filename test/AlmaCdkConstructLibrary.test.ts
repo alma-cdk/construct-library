@@ -180,7 +180,8 @@ test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
   const snapshot = synthProject({
     pnpmSettings: {
       minimumReleaseAge: 60,
-      onlyBuiltDependencies: ['esbuild'],
+      allowBuilds: { esbuild: true },
+      trustPolicyExclude: ['esbuild@0.27.2'],
       overrides: {
         '@types/node': '^24',
       },
@@ -189,8 +190,11 @@ test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
   const workspaceConfig = snapshot['pnpm-workspace.yaml'];
 
   expect(workspaceConfig).toContain('minimumReleaseAge: 60');
-  expect(workspaceConfig).toContain('onlyBuiltDependencies:');
-  expect(workspaceConfig).toContain('  - esbuild');
+  expect(workspaceConfig).toContain('allowBuilds:');
+  expect(workspaceConfig).toContain('  unrs-resolver: true');
+  expect(workspaceConfig).toContain('  esbuild: true');
+  expect(workspaceConfig).toContain('  - jsii@5.9.33');
+  expect(workspaceConfig).toContain('  - esbuild@0.27.2');
   expect(workspaceConfig).toContain('overrides:');
   expect(workspaceConfig).toContain('  "@types/node": ^24');
 });

@@ -85,5 +85,5 @@ Notes:
 
 - On a pnpm **major** upgrade `node_modules` is recreated; without a TTY to confirm, use `CI=true pnpm install`.
 
-- pnpm v11 ignores the deprecated `onlyBuiltDependencies`: if your `pnpmSettings` sets it, use `allowBuilds: { '<package>': true }` instead, or builds are skipped (and fail the install under `strictDepBuilds`).
+- `pnpmSettings` only accepts settings that the pinned pnpm still supports, so options dropped by pnpm v11 are rejected at synth. Most notably, replace `onlyBuiltDependencies` with `allowBuilds: { '<package>': true }` – pnpm v11 ignores the former, skipping the builds (which fails the install under `strictDepBuilds`).
 
