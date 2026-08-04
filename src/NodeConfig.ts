@@ -45,15 +45,11 @@ export class NodeConfig {
       lines: [options.workflowNodeVersion],
     });
 
-    // pnpm self-downloads & runs this exact version within the project directory
-    // (`managePackageManagerVersions` is enabled by default since pnpm v10),
-    // keeping local runs aligned with the version used by the CI workflows.
+    // pnpm v11 always self-downloads & runs this exact version within the
+    // project directory, keeping local runs aligned with the CI workflows.
     project.package.addField('packageManager', PACKAGE_MANAGER);
 
     const defaultWorkspaceConfig: PnpmWorkspaceSpecification = {
-      // Hard-fail instead of silently continuing if pnpm's version does not
-      // exactly match the `packageManager` field set above.
-      packageManagerStrictVersion: true,
       minimumReleaseAge: daysToMinutes(3),
       minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
       trustPolicy: 'no-downgrade',
@@ -62,7 +58,7 @@ export class NodeConfig {
       nodeLinker: 'hoisted', // required for bundled deps
       resolutionMode: 'highest',
       strictDepBuilds: true,
-      // Replaces the deprecated `onlyBuiltDependencies`, which pnpm v11 ignores.
+      // Replaces `onlyBuiltDependencies`, which pnpm v11 ignores.
       allowBuilds: {
         'unrs-resolver': true, // needed by Jest
       },
