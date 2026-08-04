@@ -1,4 +1,5 @@
 import { TextFile, cdk, YamlFile } from 'projen';
+import { PACKAGE_MANAGER } from './constants';
 import { daysToMinutes } from './daysToMinutes';
 import { PnpmWorkspaceSpecification } from './pnpm-workspace-schema';
 
@@ -44,6 +45,11 @@ export class NodeConfig {
       lines: [options.workflowNodeVersion],
     });
 
+    // pnpm self-downloads & runs this exact version within the project directory
+    // (`managePackageManagerVersions` is enabled by default since pnpm v10),
+    // keeping local runs aligned with the version used by the CI workflows.
+    project.package.addField('packageManager', PACKAGE_MANAGER);
+
     const defaultWorkspaceConfig: PnpmWorkspaceSpecification = {
       minimumReleaseAge: daysToMinutes(3),
       minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
@@ -53,9 +59,10 @@ export class NodeConfig {
       nodeLinker: 'hoisted', // required for bundled deps
       resolutionMode: 'highest',
       strictDepBuilds: true,
-      onlyBuiltDependencies: [
-        'unrs-resolver', // needed by Jest
-      ],
+      // Replaces the deprecated `onlyBuiltDependencies`, which pnpm v11 ignores.
+      allowBuilds: {
+        'unrs-resolver': true, // needed by Jest
+      },
       blockExoticSubdeps: true,
       overrides: {},
     };

@@ -184,7 +184,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -274,7 +274,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -315,7 +315,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -356,7 +356,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -438,7 +438,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -522,7 +522,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -571,7 +571,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -616,7 +616,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -664,7 +664,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -702,7 +702,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10"
+          version: 11.19.0
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -1736,6 +1736,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "@alma-cdk/project",
+    "packageManager": "pnpm@11.19.0",
     "peerDependencies": {
       "aws-cdk-lib": "^2.220.0",
       "constructs": "^10.3.0",
@@ -1792,8 +1793,8 @@ trustPolicyExclude:
 nodeLinker: hoisted
 resolutionMode: highest
 strictDepBuilds: true
-onlyBuiltDependencies:
-  - unrs-resolver
+allowBuilds:
+  unrs-resolver: true
 blockExoticSubdeps: true
 overrides: {}
 ",

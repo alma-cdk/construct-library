@@ -6,6 +6,7 @@ import {
   NODEJS_MAX_VERSION,
   NODEJS_MIN_VERSION,
   NODEJS_WORKFLOW_VERSION,
+  PNPM_VERSION,
   PROJEN_COMMAND,
   TYPESCRIPT_VERSION,
 } from './src/constants';
@@ -25,6 +26,7 @@ const project = new cdk.JsiiProject({
   projenrcTs: true,
   projenCommand: PROJEN_COMMAND,
   packageManager: javascript.NodePackageManager.PNPM,
+  pnpmVersion: PNPM_VERSION,
   npmAccess: javascript.NpmAccess.PUBLIC,
   npmTrustedPublishing: true,
   jsiiVersion: JSII_VERSION,

@@ -1,6 +1,7 @@
 import { cdk } from 'projen';
 import { Testing } from 'projen/lib/testing';
 import { AlmaCdkConstructLibrary } from '../src/AlmaCdkConstructLibrary';
+import { PACKAGE_MANAGER, PNPM_VERSION } from '../src/constants';
 
 type LibraryOptions = ConstructorParameters<typeof AlmaCdkConstructLibrary>[0];
 
@@ -46,6 +47,18 @@ test('.nvmrc uses workflowNodeVersion when provided', () => {
   });
 
   expect(snapshot['.nvmrc'].trim()).toBe('22');
+});
+
+test('pins the same pnpm version for local runs and CI workflows', () => {
+  const snapshot = synthProject();
+  const packageJson = snapshot['package.json'] as {
+    packageManager: string;
+  };
+
+  expect(packageJson.packageManager).toBe(PACKAGE_MANAGER);
+  expect(snapshot['.github/workflows/build.yml']).toContain(
+    `version: ${PNPM_VERSION}`,
+  );
 });
 
 test('package.json merges keywords case-insensitively', () => {
@@ -159,7 +172,7 @@ test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
   expect(workspaceConfig).toContain('minimumReleaseAge: 4320');
   expect(workspaceConfig).toContain('trustPolicy: no-downgrade');
   expect(workspaceConfig).toContain('nodeLinker: hoisted');
-  expect(workspaceConfig).toContain('onlyBuiltDependencies:');
+  expect(workspaceConfig).toContain('allowBuilds:');
   expect(workspaceConfig).toContain('overrides:');
 });
 

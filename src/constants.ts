@@ -7,6 +7,18 @@
  * jsii assembly.
  */
 
+/**
+ * pnpm version used by the generated GitHub Actions workflows (`pnpm/action-setup`)
+ * and pinned locally through the package.json `packageManager` field.
+ */
+export const PNPM_VERSION = '11.19.0';
+
+/**
+ * Value written to the package.json `packageManager` field, which makes pnpm
+ * self-switch to `PNPM_VERSION` in the project directory.
+ */
+export const PACKAGE_MANAGER = `pnpm@${PNPM_VERSION}`;
+
 /** Command used to invoke projen. */
 export const PROJEN_COMMAND = 'pnpm exec projen';
 

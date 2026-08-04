@@ -4,6 +4,7 @@ import { z } from 'zod';
 import {
   JEST_VERSION,
   JSII_VERSION,
+  PNPM_VERSION,
   PROJEN_COMMAND,
   TYPESCRIPT_VERSION,
 } from './constants';
@@ -79,6 +80,7 @@ function buildAwsCdkConstructLibraryOptions(
     authorOrganization: true,
     defaultReleaseBranch: 'main',
     packageManager: javascript.NodePackageManager.PNPM,
+    pnpmVersion: PNPM_VERSION,
     npmAccess: javascript.NpmAccess.PUBLIC,
     npmTrustedPublishing: true,
     projenrcTs: true,

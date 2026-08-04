@@ -10,7 +10,7 @@ trustPolicyExclude:
 nodeLinker: hoisted
 resolutionMode: highest
 strictDepBuilds: true
-onlyBuiltDependencies:
-  - unrs-resolver
+allowBuilds:
+  unrs-resolver: true
 blockExoticSubdeps: true
 overrides: {}
