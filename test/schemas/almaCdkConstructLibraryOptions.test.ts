@@ -1,9 +1,11 @@
 import { cdk } from 'projen';
 import {
-  almaCdkConstructLibraryOptionsSchema,
-  branchOptionsSchema,
   CDK_DEFAULT_VERSION,
   CONSTRUCTS_DEFAULT_VERSION,
+} from '../../src/constants';
+import {
+  almaCdkConstructLibraryOptionsSchema,
+  branchOptionsSchema,
 } from '../../src/schemas/almaCdkConstructLibraryOptions';
 
 const validBaseOptions = {
