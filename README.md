@@ -63,3 +63,27 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
 
 8. Reinstall everything with `pnpm install`
 
+## Upgrading pnpm
+
+The pnpm version is pinned by this library – both in the package.json `packageManager` field (used locally) and in the CI workflows – so it upgrades together with the library:
+
+1. Upgrade the dependency: `pnpm exec projen upgrade` (or merge the automated upgrade PR)
+
+2. Regenerate the `packageManager` field and workflows:
+    ```sh
+    pnpm exec projen
+    ```
+
+3. Install with the new version, which pnpm self-downloads and switches to:
+    ```sh
+    pnpm install
+    ```
+
+4. Commit the regenerated files: `package.json`, `.github/workflows/*` and `pnpm-lock.yaml`
+
+Notes:
+
+- On a pnpm **major** upgrade `node_modules` is recreated; without a TTY to confirm, use `CI=true pnpm install`.
+
+- pnpm v11 ignores the deprecated `onlyBuiltDependencies`: if your `pnpmSettings` sets it, use `allowBuilds: { '<package>': true }` instead, or builds are skipped (and fail the install under `strictDepBuilds`).
+
