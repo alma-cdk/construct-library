@@ -61,6 +61,12 @@ test('pins the same pnpm version for local runs and CI workflows', () => {
   );
 });
 
+test('.npmrc rejects an older pnpm that would not switch to the pinned version', () => {
+  const snapshot = synthProject();
+
+  expect(snapshot['.npmrc']).toContain('package-manager-strict-version=true');
+});
+
 test('package.json merges keywords case-insensitively', () => {
   const snapshot = synthProject({
     keywords: ['Custom', 'AWS', 'cdk'],
