@@ -51,6 +51,9 @@ export class NodeConfig {
     project.package.addField('packageManager', PACKAGE_MANAGER);
 
     const defaultWorkspaceConfig: PnpmWorkspaceSpecification = {
+      // Hard-fail instead of silently continuing if pnpm's version does not
+      // exactly match the `packageManager` field set above.
+      packageManagerStrictVersion: true,
       minimumReleaseAge: daysToMinutes(3),
       minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
       trustPolicy: 'no-downgrade',

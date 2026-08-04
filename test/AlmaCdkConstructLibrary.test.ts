@@ -169,6 +169,7 @@ test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
   const snapshot = synthProject();
   const workspaceConfig = snapshot['pnpm-workspace.yaml'];
 
+  expect(workspaceConfig).toContain('packageManagerStrictVersion: true');
   expect(workspaceConfig).toContain('minimumReleaseAge: 4320');
   expect(workspaceConfig).toContain('trustPolicy: no-downgrade');
   expect(workspaceConfig).toContain('nodeLinker: hoisted');
