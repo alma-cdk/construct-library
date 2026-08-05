@@ -1167,7 +1167,7 @@ dist/**/*
       {
         "name": "constructs",
         "type": "peer",
-        "version": "^10.3.0",
+        "version": "^10.7.2",
       },
     ],
   },
@@ -1861,7 +1861,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "@typescript-eslint/parser": "^8",
       "aws-cdk-lib": "2.220.0",
       "commit-and-tag-version": "^12",
-      "constructs": "10.3.0",
+      "constructs": "10.7.2",
       "eslint": "^9",
       "eslint-config-prettier": "*",
       "eslint-import-resolver-typescript": "*",
@@ -1961,7 +1961,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
     "packageManager": "pnpm@11.19.0",
     "peerDependencies": {
       "aws-cdk-lib": "^2.220.0",
-      "constructs": "^10.3.0",
+      "constructs": "^10.7.2",
     },
     "pnpm": {},
     "publishConfig": {
