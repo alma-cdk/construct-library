@@ -35,13 +35,18 @@ export const TYPESCRIPT_VERSION = '^5.9';
 export const NODEJS_MIN_VERSION = '22';
 
 /** Maximum supported Node.js version. */
-export const NODEJS_MAX_VERSION = '24';
+export const NODEJS_MAX_VERSION = '26';
 
-/** Node.js version used by the generated GitHub Actions workflows. */
-export const NODEJS_WORKFLOW_VERSION = NODEJS_MAX_VERSION;
+/**
+ * Node.js version used by the generated GitHub Actions workflows.
+ *
+ * Tracked separately from `NODEJS_MAX_VERSION` so that raising the supported
+ * ceiling does not move CI onto a release before we want to build on it.
+ */
+export const NODEJS_WORKFLOW_VERSION = '24';
 
 /** Default AWS CDK version passed to projen when `cdkVersion` is omitted from options. */
 export const CDK_DEFAULT_VERSION = '2.220.0';
 
 /** Default `constructs` version passed to projen when `constructsVersion` is omitted from options. */
-export const CONSTRUCTS_DEFAULT_VERSION = '10.3.0';
+export const CONSTRUCTS_DEFAULT_VERSION = '10.7.2';

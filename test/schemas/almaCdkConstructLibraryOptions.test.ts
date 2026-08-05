@@ -71,7 +71,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.codeCov).toBe(false);
     expect(result.minNodeVersion).toBe('22');
     expect(result.workflowNodeVersion).toBe('24');
-    expect(result.maxNodeVersion).toBe('24');
+    expect(result.maxNodeVersion).toBe('26');
     expect(result.cdkVersion).toBe(CDK_DEFAULT_VERSION);
     expect(result.constructsVersion).toBe(CONSTRUCTS_DEFAULT_VERSION);
   });
@@ -82,7 +82,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     expect(result.codeCov).toBe(false);
     expect(result.minNodeVersion).toBe('22');
     expect(result.workflowNodeVersion).toBe('24');
-    expect(result.maxNodeVersion).toBe('24');
+    expect(result.maxNodeVersion).toBe('26');
   });
 
   it('preserves codeCov when provided', () => {

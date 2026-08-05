@@ -1888,7 +1888,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       },
     },
     "engines": {
-      "node": ">= 22 <= 24",
+      "node": ">= 22 <= 26",
     },
     "jest": {
       "clearMocks": true,
