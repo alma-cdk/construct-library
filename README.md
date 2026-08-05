@@ -22,7 +22,7 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
     npm i -D @alma-cdk/construct-library
     ```
 
-2. If existing project, install `npm i -D projen@0.99.21` or newer
+2. If existing project, install `npm i -D projen@0.101.23` or newer
 
 2. Import the custom Projen project type:
     ```diff

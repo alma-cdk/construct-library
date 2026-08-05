@@ -9,6 +9,7 @@ import {
   TYPESCRIPT_VERSION,
 } from './constants';
 import { NodeConfig } from './NodeConfig';
+import { buildPnpmWorkspaceYamlOptions } from './pnpmWorkspaceSettings';
 import {
   almaCdkConstructLibraryOptionsSchema,
   type AlmaCdkConstructLibraryOptions,
@@ -71,7 +72,8 @@ function buildPublishToGoOptions(repositoryUrl: string) {
 function buildAwsCdkConstructLibraryOptions(
   validatedOptions: ValidatedOptions,
 ): awscdk.AwsCdkConstructLibraryOptions {
-  const { golang, python, ...awsCdkConstructLibraryOptions } = validatedOptions;
+  const { golang, python, pnpmSettings, ...awsCdkConstructLibraryOptions } =
+    validatedOptions;
 
   return {
     ...awsCdkConstructLibraryOptions,
@@ -81,6 +83,9 @@ function buildAwsCdkConstructLibraryOptions(
     defaultReleaseBranch: 'main',
     packageManager: javascript.NodePackageManager.PNPM,
     pnpmVersion: PNPM_VERSION,
+    pnpmOptions: {
+      workspaceYamlOptions: buildPnpmWorkspaceYamlOptions(pnpmSettings),
+    },
     npmAccess: javascript.NpmAccess.PUBLIC,
     npmTrustedPublishing: true,
     projenrcTs: true,
@@ -137,7 +142,6 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
 
     new NodeConfig(this, {
       workflowNodeVersion: validatedOptions.workflowNodeVersion,
-      pnpmSettings: validatedOptions.pnpmSettings,
     });
   }
 }

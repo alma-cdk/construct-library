@@ -69,7 +69,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       'https://github.com/alma-cdk/project.git',
     );
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('20');
+    expect(result.minNodeVersion).toBe('22');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('24');
     expect(result.cdkVersion).toBe(CDK_DEFAULT_VERSION);
@@ -80,7 +80,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse(validBaseOptions);
     expect(result.keywords).toEqual([]);
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('20');
+    expect(result.minNodeVersion).toBe('22');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('24');
   });

@@ -1,4 +1,4 @@
-import { mergePnpmSettings } from '../src/NodeConfig';
+import { mergePnpmSettings } from '../src/pnpmWorkspaceSettings';
 
 describe('mergePnpmSettings', () => {
   it('returns defaults when overrides are undefined', () => {

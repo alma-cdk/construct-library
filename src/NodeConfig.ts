@@ -1,39 +1,8 @@
-import { TextFile, cdk, YamlFile } from 'projen';
+import { TextFile, cdk } from 'projen';
 import { PACKAGE_MANAGER } from './constants';
-import { daysToMinutes } from './daysToMinutes';
-import { PnpmWorkspaceSpecification } from './pnpm-workspace-schema';
 
 export interface NodeConfigOptions {
   readonly workflowNodeVersion: string;
-  readonly pnpmSettings?: PnpmWorkspaceSpecification;
-}
-
-function isPlainObject(
-  value: unknown,
-): value is Record<string, unknown> {
-  return value != null && typeof value === 'object' && !Array.isArray(value);
-}
-
-export function mergePnpmSettings<T>(defaults: T, overrides: unknown): T {
-  if (Array.isArray(defaults) && Array.isArray(overrides)) {
-    return [...defaults, ...overrides] as T;
-  }
-
-  if (isPlainObject(defaults) && isPlainObject(overrides)) {
-    const mergedEntries = Object.keys(overrides).map((key) => [
-      key,
-      key in defaults
-        ? mergePnpmSettings(defaults[key], overrides[key])
-        : overrides[key],
-    ]);
-
-    return {
-      ...defaults,
-      ...Object.fromEntries(mergedEntries),
-    } as T;
-  }
-
-  return (overrides ?? defaults) as T;
 }
 
 export class NodeConfig {
@@ -55,30 +24,7 @@ export class NodeConfig {
     // v11 ignores this setting in either location.
     project.npmrc.addConfig('package-manager-strict-version', 'true');
 
-    const defaultWorkspaceConfig: PnpmWorkspaceSpecification = {
-      minimumReleaseAge: daysToMinutes(3),
-      minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
-      trustPolicy: 'no-downgrade',
-      trustPolicyIgnoreAfter: daysToMinutes(14),
-      trustPolicyExclude: ['jsii@5.9.33'],
-      nodeLinker: 'hoisted', // required for bundled deps
-      resolutionMode: 'highest',
-      strictDepBuilds: true,
-      // Replaces `onlyBuiltDependencies`, which pnpm v11 ignores.
-      allowBuilds: {
-        'unrs-resolver': true, // needed by Jest
-      },
-      blockExoticSubdeps: true,
-      overrides: {},
-    };
-
-    const workspaceConfig = mergePnpmSettings(
-      defaultWorkspaceConfig,
-      options.pnpmSettings,
-    );
-
-    new YamlFile(project, 'pnpm-workspace.yaml', {
-      obj: workspaceConfig,
-    });
+    // `pnpm-workspace.yaml` is not written here: projen's `NodePackage` already
+    // declares that file for every pnpm project. See `pnpmWorkspaceSettings.ts`.
   }
 }

@@ -149,7 +149,7 @@ test('build workflow includes Codecov step when codeCov is enabled', () => {
   });
 
   expect(snapshot['.github/workflows/build.yml']).toContain(
-    'codecov/codecov-action@v5',
+    'codecov/codecov-action@v6',
   );
 });
 
@@ -179,7 +179,7 @@ test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
   expect(workspaceConfig).toContain('trustPolicy: no-downgrade');
   expect(workspaceConfig).toContain('nodeLinker: hoisted');
   expect(workspaceConfig).toContain('allowBuilds:');
-  expect(workspaceConfig).toContain('overrides:');
+  expect(workspaceConfig).toContain('blockExoticSubdeps: true');
 });
 
 test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {

@@ -11,6 +11,7 @@ import {
   TYPESCRIPT_VERSION,
 } from './src/constants';
 import { NodeConfig } from './src/NodeConfig';
+import { buildPnpmWorkspaceYamlOptions } from './src/pnpmWorkspaceSettings';
 
 const project = new cdk.JsiiProject({
   stability: cdk.Stability.STABLE,
@@ -27,6 +28,9 @@ const project = new cdk.JsiiProject({
   projenCommand: PROJEN_COMMAND,
   packageManager: javascript.NodePackageManager.PNPM,
   pnpmVersion: PNPM_VERSION,
+  pnpmOptions: {
+    workspaceYamlOptions: buildPnpmWorkspaceYamlOptions(),
+  },
   npmAccess: javascript.NpmAccess.PUBLIC,
   npmTrustedPublishing: true,
   jsiiVersion: JSII_VERSION,
@@ -47,7 +51,7 @@ const project = new cdk.JsiiProject({
   ],
 
   deps: ['projen'],
-  peerDeps: ['constructs@^10.0.0', 'projen@^0.99.21'],
+  peerDeps: ['constructs@^10.7.2', 'projen@^0.101.23'],
   bundledDeps: ['zod@4', 'semver@7'],
   devDeps: [
     `typescript@${TYPESCRIPT_VERSION}`,

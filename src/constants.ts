@@ -23,7 +23,7 @@ export const PACKAGE_MANAGER = `pnpm@${PNPM_VERSION}`;
 export const PROJEN_COMMAND = 'pnpm exec projen';
 
 /** jsii toolchain version. */
-export const JSII_VERSION = '~5.9.0';
+export const JSII_VERSION = '~6.0.7';
 
 /** Jest version. */
 export const JEST_VERSION = '^30';
@@ -32,7 +32,7 @@ export const JEST_VERSION = '^30';
 export const TYPESCRIPT_VERSION = '^5.9';
 
 /** Minimum supported Node.js version. */
-export const NODEJS_MIN_VERSION = '20';
+export const NODEJS_MIN_VERSION = '22';
 
 /** Maximum supported Node.js version. */
 export const NODEJS_MAX_VERSION = '24';
