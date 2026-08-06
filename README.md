@@ -87,3 +87,8 @@ Notes:
 
 - `pnpmSettings` only accepts settings that the pinned pnpm still supports, so options dropped by pnpm v11 are rejected at synth. Most notably, replace `onlyBuiltDependencies` with `allowBuilds: { '<package>': true }` – pnpm v11 ignores the former, skipping the builds (which fails the install under `strictDepBuilds`).
 
+## Upgrading downstream packages
+
+```sh
+pnpm add -D @alma-cdk/construct-library@1 constructs@10.7 projen@0.101.23
+```
