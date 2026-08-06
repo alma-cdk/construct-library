@@ -90,5 +90,5 @@ Notes:
 ## Upgrading downstream packages
 
 ```sh
-pnpm add -D @alma-cdk/construct-library@1 constructs@10.7 projen@0.101.23
+pnpm add -D @alma-cdk/construct-library@2 constructs@10.7 projen@0.101.23
 ```
