@@ -46,7 +46,7 @@ export const NODEJS_MAX_VERSION = '26';
 export const NODEJS_WORKFLOW_VERSION = '24';
 
 /** Default AWS CDK version passed to projen when `cdkVersion` is omitted from options. */
-export const CDK_DEFAULT_VERSION = '2.220.0';
+export const CDK_DEFAULT_VERSION = '2.260.0';
 
 /** Default `constructs` version passed to projen when `constructsVersion` is omitted from options. */
 export const CONSTRUCTS_DEFAULT_VERSION = '10.7.2';

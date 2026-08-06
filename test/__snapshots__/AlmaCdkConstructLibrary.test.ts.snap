@@ -1162,7 +1162,7 @@ dist/**/*
       {
         "name": "aws-cdk-lib",
         "type": "peer",
-        "version": "^2.220.0",
+        "version": "^2.260.0",
       },
       {
         "name": "constructs",
@@ -1859,7 +1859,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "@types/node": "^22",
       "@typescript-eslint/eslint-plugin": "^8",
       "@typescript-eslint/parser": "^8",
-      "aws-cdk-lib": "2.220.0",
+      "aws-cdk-lib": "2.260.0",
       "commit-and-tag-version": "^12",
       "constructs": "10.7.2",
       "eslint": "^9",
@@ -1960,7 +1960,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
     "name": "@alma-cdk/project",
     "packageManager": "pnpm@11.19.0",
     "peerDependencies": {
-      "aws-cdk-lib": "^2.220.0",
+      "aws-cdk-lib": "^2.260.0",
       "constructs": "^10.7.2",
     },
     "pnpm": {},
@@ -2012,12 +2012,16 @@ resolutionMode: highest
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@alma-cdk/construct-library"
+  - jsii@6.0.9
+  - jsii-rosetta@6.0.9
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - jsii@5.9.33
   - jsii@5.9.49
   - jsii@6.0.7
   - jsii@6.0.8
+  - jsii@6.0.9
+  - jsii-rosetta@6.0.9
 allowBuilds:
   unrs-resolver: true
 blockExoticSubdeps: true

@@ -15,7 +15,7 @@ import { buildPnpmWorkspaceYamlOptions } from './src/pnpmWorkspaceSettings';
 
 const project = new cdk.JsiiProject({
   stability: cdk.Stability.STABLE,
-  majorVersion: 1,
+  majorVersion: 2,
   name: '@alma-cdk/construct-library',
   author: 'Alma Media',
   authorAddress: 'opensource@almamedia.dev',

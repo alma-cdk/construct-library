@@ -30,7 +30,11 @@ export function mergePnpmSettings<T>(defaults: T, overrides: unknown): T {
 
 const DEFAULT_PNPM_SETTINGS: PnpmWorkspaceSpecification = {
   minimumReleaseAge: daysToMinutes(3),
-  minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
+  minimumReleaseAgeExclude: [
+    '@alma-cdk/construct-library',
+    'jsii@6.0.9',
+    'jsii-rosetta@6.0.9',
+  ],
   trustPolicy: 'no-downgrade',
   trustPolicyIgnoreAfter: daysToMinutes(14),
   trustPolicyExclude: [
@@ -38,6 +42,8 @@ const DEFAULT_PNPM_SETTINGS: PnpmWorkspaceSpecification = {
     'jsii@5.9.49',
     'jsii@6.0.7',
     'jsii@6.0.8',
+    'jsii@6.0.9',
+    'jsii-rosetta@6.0.9',
   ],
   nodeLinker: 'hoisted', // required for bundled deps
   resolutionMode: 'highest',
