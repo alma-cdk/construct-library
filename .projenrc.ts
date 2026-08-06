@@ -1,17 +1,21 @@
 import { cdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
+import {
+  JEST_VERSION,
+  JSII_VERSION,
+  NODEJS_MAX_VERSION,
+  NODEJS_MIN_VERSION,
+  NODEJS_WORKFLOW_VERSION,
+  PNPM_VERSION,
+  PROJEN_COMMAND,
+  TYPESCRIPT_VERSION,
+} from './src/constants';
 import { NodeConfig } from './src/NodeConfig';
-
-// const CDK_VERSION = '2.220.0';
-const JSII_VERSION = '~5.9.0';
-const JEST_VERSION = '^30';
-const MIN_NODE_VERSION = '20';
-const MAX_NODE_VERSION = '24';
-const WORKFLOW_NODE_VERSION = MAX_NODE_VERSION;
+import { buildPnpmWorkspaceYamlOptions } from './src/pnpmWorkspaceSettings';
 
 const project = new cdk.JsiiProject({
-  stability: cdk.Stability.EXPERIMENTAL,
-  majorVersion: 0,
+  stability: cdk.Stability.STABLE,
+  majorVersion: 1,
   name: '@alma-cdk/construct-library',
   author: 'Alma Media',
   authorAddress: 'opensource@almamedia.dev',
@@ -21,8 +25,12 @@ const project = new cdk.JsiiProject({
   defaultReleaseBranch: 'main',
   releaseEnvironment: 'production',
   projenrcTs: true,
-  projenCommand: 'pnpm exec projen',
+  projenCommand: PROJEN_COMMAND,
   packageManager: javascript.NodePackageManager.PNPM,
+  pnpmVersion: PNPM_VERSION,
+  pnpmOptions: {
+    workspaceYamlOptions: buildPnpmWorkspaceYamlOptions(),
+  },
   npmAccess: javascript.NpmAccess.PUBLIC,
   npmTrustedPublishing: true,
   jsiiVersion: JSII_VERSION,
@@ -43,12 +51,16 @@ const project = new cdk.JsiiProject({
   ],
 
   deps: ['projen'],
-  peerDeps: ['constructs@^10.0.0', 'projen@^0.99.21'],
+  peerDeps: ['constructs@^10.7.2', 'projen@^0.101.23'],
   bundledDeps: ['zod@4', 'semver@7'],
-  devDeps: ['typescript@^5.9', '@types/semver@^7', 'json-schema-to-typescript@^15'],
-  minNodeVersion: MIN_NODE_VERSION,
-  workflowNodeVersion: WORKFLOW_NODE_VERSION,
-  maxNodeVersion: MAX_NODE_VERSION,
+  devDeps: [
+    `typescript@${TYPESCRIPT_VERSION}`,
+    '@types/semver@^7',
+    'json-schema-to-typescript@^15',
+  ],
+  minNodeVersion: NODEJS_MIN_VERSION,
+  workflowNodeVersion: NODEJS_WORKFLOW_VERSION,
+  maxNodeVersion: NODEJS_MAX_VERSION,
 });
 
 project.addTask('format', {
@@ -56,7 +68,7 @@ project.addTask('format', {
 });
 
 new NodeConfig(project, {
-  workflowNodeVersion: WORKFLOW_NODE_VERSION,
+  workflowNodeVersion: NODEJS_WORKFLOW_VERSION,
 });
 
 project.addTask('generate:pnpm-workspace-types', {

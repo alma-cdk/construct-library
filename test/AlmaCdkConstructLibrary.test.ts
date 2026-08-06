@@ -1,6 +1,7 @@
 import { cdk } from 'projen';
 import { Testing } from 'projen/lib/testing';
 import { AlmaCdkConstructLibrary } from '../src/AlmaCdkConstructLibrary';
+import { PACKAGE_MANAGER, PNPM_VERSION } from '../src/constants';
 
 type LibraryOptions = ConstructorParameters<typeof AlmaCdkConstructLibrary>[0];
 
@@ -46,6 +47,24 @@ test('.nvmrc uses workflowNodeVersion when provided', () => {
   });
 
   expect(snapshot['.nvmrc'].trim()).toBe('22');
+});
+
+test('pins the same pnpm version for local runs and CI workflows', () => {
+  const snapshot = synthProject();
+  const packageJson = snapshot['package.json'] as {
+    packageManager: string;
+  };
+
+  expect(packageJson.packageManager).toBe(PACKAGE_MANAGER);
+  expect(snapshot['.github/workflows/build.yml']).toContain(
+    `version: ${PNPM_VERSION}`,
+  );
+});
+
+test('.npmrc rejects an older pnpm that would not switch to the pinned version', () => {
+  const snapshot = synthProject();
+
+  expect(snapshot['.npmrc']).toContain('package-manager-strict-version=true');
 });
 
 test('package.json merges keywords case-insensitively', () => {
@@ -130,7 +149,7 @@ test('build workflow includes Codecov step when codeCov is enabled', () => {
   });
 
   expect(snapshot['.github/workflows/build.yml']).toContain(
-    'codecov/codecov-action@v5',
+    'codecov/codecov-action@v6',
   );
 });
 
@@ -159,15 +178,16 @@ test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
   expect(workspaceConfig).toContain('minimumReleaseAge: 4320');
   expect(workspaceConfig).toContain('trustPolicy: no-downgrade');
   expect(workspaceConfig).toContain('nodeLinker: hoisted');
-  expect(workspaceConfig).toContain('onlyBuiltDependencies:');
-  expect(workspaceConfig).toContain('overrides:');
+  expect(workspaceConfig).toContain('allowBuilds:');
+  expect(workspaceConfig).toContain('blockExoticSubdeps: true');
 });
 
 test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
   const snapshot = synthProject({
     pnpmSettings: {
       minimumReleaseAge: 60,
-      onlyBuiltDependencies: ['esbuild'],
+      allowBuilds: { esbuild: true },
+      trustPolicyExclude: ['esbuild@0.27.2'],
       overrides: {
         '@types/node': '^24',
       },
@@ -176,8 +196,11 @@ test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
   const workspaceConfig = snapshot['pnpm-workspace.yaml'];
 
   expect(workspaceConfig).toContain('minimumReleaseAge: 60');
-  expect(workspaceConfig).toContain('onlyBuiltDependencies:');
-  expect(workspaceConfig).toContain('  - esbuild');
+  expect(workspaceConfig).toContain('allowBuilds:');
+  expect(workspaceConfig).toContain('  unrs-resolver: true');
+  expect(workspaceConfig).toContain('  esbuild: true');
+  expect(workspaceConfig).toContain('  - jsii@5.9.33');
+  expect(workspaceConfig).toContain('  - esbuild@0.27.2');
   expect(workspaceConfig).toContain('overrides:');
   expect(workspaceConfig).toContain('  "@types/node": ^24');
 });

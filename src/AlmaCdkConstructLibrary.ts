@@ -1,7 +1,15 @@
 import { awscdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
 import { z } from 'zod';
+import {
+  JEST_VERSION,
+  JSII_VERSION,
+  PNPM_VERSION,
+  PROJEN_COMMAND,
+  TYPESCRIPT_VERSION,
+} from './constants';
 import { NodeConfig } from './NodeConfig';
+import { buildPnpmWorkspaceYamlOptions } from './pnpmWorkspaceSettings';
 import {
   almaCdkConstructLibraryOptionsSchema,
   type AlmaCdkConstructLibraryOptions,
@@ -12,8 +20,6 @@ import { uniqueKeywordsCaseInsensitive } from './uniqueKeywordsCaseInsensitive';
 
 export type { AlmaCdkConstructLibraryOptions } from './schemas/almaCdkConstructLibraryOptions';
 
-const JSII_VERSION = '~5.9.0';
-const JEST_VERSION = '^30';
 const DEFAULT_KEYWORDS = ['cdk', 'aws-cdk', 'awscdk', 'aws'] as const;
 const PRETTIER_IGNORE_PATTERNS = [
   '.github/**/*',
@@ -66,15 +72,20 @@ function buildPublishToGoOptions(repositoryUrl: string) {
 function buildAwsCdkConstructLibraryOptions(
   validatedOptions: ValidatedOptions,
 ): awscdk.AwsCdkConstructLibraryOptions {
-  const { golang, python, ...awsCdkConstructLibraryOptions } = validatedOptions;
+  const { golang, python, pnpmSettings, ...awsCdkConstructLibraryOptions } =
+    validatedOptions;
 
   return {
     ...awsCdkConstructLibraryOptions,
     // Package manager & projen
-    projenCommand: 'pnpm exec projen',
+    projenCommand: PROJEN_COMMAND,
     authorOrganization: true,
     defaultReleaseBranch: 'main',
     packageManager: javascript.NodePackageManager.PNPM,
+    pnpmVersion: PNPM_VERSION,
+    pnpmOptions: {
+      workspaceYamlOptions: buildPnpmWorkspaceYamlOptions(pnpmSettings),
+    },
     npmAccess: javascript.NpmAccess.PUBLIC,
     npmTrustedPublishing: true,
     projenrcTs: true,
@@ -117,7 +128,7 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
     this.workflowNodeVersion = validatedOptions.workflowNodeVersion;
 
     this.addDevDeps('@alma-cdk/construct-library'); // Self-assignment required for the dependency not to be removed by Projen
-    this.addDevDeps('typescript@^5.9'); // Defaults to very old typescript@4.9
+    this.addDevDeps(`typescript@${TYPESCRIPT_VERSION}`); // Defaults to very old typescript@4.9
 
     this.addTask('format', {
       exec: 'prettier --write .',
@@ -131,7 +142,6 @@ export class AlmaCdkConstructLibrary extends awscdk.AwsCdkConstructLibrary {
 
     new NodeConfig(this, {
       workflowNodeVersion: validatedOptions.workflowNodeVersion,
-      pnpmSettings: validatedOptions.pnpmSettings,
     });
   }
 }

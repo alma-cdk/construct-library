@@ -2,6 +2,13 @@ import { awscdk, cdk } from 'projen';
 import { BranchOptions } from 'projen/lib/release';
 import * as semver from 'semver';
 import { z } from 'zod';
+import {
+  CDK_DEFAULT_VERSION,
+  CONSTRUCTS_DEFAULT_VERSION,
+  NODEJS_MAX_VERSION,
+  NODEJS_MIN_VERSION,
+  NODEJS_WORKFLOW_VERSION,
+} from '../constants';
 import type { PnpmWorkspaceSpecification } from '../pnpm-workspace-schema';
 import { nameSchema } from './name';
 import { pnpmSettingsSchema } from './pnpmSettings';
@@ -91,16 +98,6 @@ type SchemaCompatibleAwsCdkConstructLibraryOptions = Omit<
   Partial<awscdk.AwsCdkConstructLibraryOptions>,
   'python'
 >;
-
-const NODEJS_MIN_VERSION = '20';
-const NODEJS_MAX_VERSION = '24';
-const NODEJS_WORKFLOW_VERSION = NODEJS_MAX_VERSION;
-
-/** Default AWS CDK version passed to projen when `cdkVersion` is omitted from options. */
-export const CDK_DEFAULT_VERSION = '2.220.0';
-
-/** Default `constructs` version passed to projen when `constructsVersion` is omitted from options. */
-export const CONSTRUCTS_DEFAULT_VERSION = '10.3.0';
 
 /** Projen AwsCdkConstructLibrary options with validation and defaults (min/max/workflow Node versions, package name, etc.). */
 // JSII cannot infer this schema shape cleanly, so we keep the runtime schema

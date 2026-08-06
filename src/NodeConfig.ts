@@ -1,38 +1,8 @@
-import { TextFile, cdk, YamlFile } from 'projen';
-import { daysToMinutes } from './daysToMinutes';
-import { PnpmWorkspaceSpecification } from './pnpm-workspace-schema';
+import { TextFile, cdk } from 'projen';
+import { PACKAGE_MANAGER } from './constants';
 
 export interface NodeConfigOptions {
   readonly workflowNodeVersion: string;
-  readonly pnpmSettings?: PnpmWorkspaceSpecification;
-}
-
-function isPlainObject(
-  value: unknown,
-): value is Record<string, unknown> {
-  return value != null && typeof value === 'object' && !Array.isArray(value);
-}
-
-export function mergePnpmSettings<T>(defaults: T, overrides: unknown): T {
-  if (Array.isArray(defaults) && Array.isArray(overrides)) {
-    return [...defaults, ...overrides] as T;
-  }
-
-  if (isPlainObject(defaults) && isPlainObject(overrides)) {
-    const mergedEntries = Object.keys(overrides).map((key) => [
-      key,
-      key in defaults
-        ? mergePnpmSettings(defaults[key], overrides[key])
-        : overrides[key],
-    ]);
-
-    return {
-      ...defaults,
-      ...Object.fromEntries(mergedEntries),
-    } as T;
-  }
-
-  return (overrides ?? defaults) as T;
 }
 
 export class NodeConfig {
@@ -44,29 +14,17 @@ export class NodeConfig {
       lines: [options.workflowNodeVersion],
     });
 
-    const defaultWorkspaceConfig: PnpmWorkspaceSpecification = {
-      minimumReleaseAge: daysToMinutes(3),
-      minimumReleaseAgeExclude: ['@alma-cdk/construct-library'],
-      trustPolicy: 'no-downgrade',
-      trustPolicyIgnoreAfter: daysToMinutes(14),
-      trustPolicyExclude: ['jsii@5.9.33'],
-      nodeLinker: 'hoisted', // required for bundled deps
-      resolutionMode: 'highest',
-      strictDepBuilds: true,
-      onlyBuiltDependencies: [
-        'unrs-resolver', // needed by Jest
-      ],
-      blockExoticSubdeps: true,
-      overrides: {},
-    };
+    // pnpm v11 always self-downloads & runs this exact version within the
+    // project directory, keeping local runs aligned with the CI workflows.
+    project.package.addField('packageManager', PACKAGE_MANAGER);
 
-    const workspaceConfig = mergePnpmSettings(
-      defaultWorkspaceConfig,
-      options.pnpmSettings,
-    );
+    // A pnpm that does not self-switch (v9, or v10 with the feature disabled)
+    // would otherwise silently install with its own version. Kept in .npmrc
+    // rather than pnpm-workspace.yaml, which v9 does not read settings from:
+    // v11 ignores this setting in either location.
+    project.npmrc.addConfig('package-manager-strict-version', 'true');
 
-    new YamlFile(project, 'pnpm-workspace.yaml', {
-      obj: workspaceConfig,
-    });
+    // `pnpm-workspace.yaml` is not written here: projen's `NodePackage` already
+    // declares that file for every pnpm project. See `pnpmWorkspaceSettings.ts`.
   }
 }

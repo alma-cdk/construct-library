@@ -1,7 +1,16 @@
 export {
   CDK_DEFAULT_VERSION,
   CONSTRUCTS_DEFAULT_VERSION,
-} from './schemas/almaCdkConstructLibraryOptions';
+  JEST_VERSION,
+  JSII_VERSION,
+  NODEJS_MAX_VERSION,
+  NODEJS_MIN_VERSION,
+  NODEJS_WORKFLOW_VERSION,
+  PACKAGE_MANAGER,
+  PNPM_VERSION,
+  PROJEN_COMMAND,
+  TYPESCRIPT_VERSION,
+} from './constants';
 export {
   AlmaCdkConstructLibrary,
   type AlmaCdkConstructLibraryOptions,

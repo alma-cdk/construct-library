@@ -1,4 +1,4 @@
-import { mergePnpmSettings } from '../src/NodeConfig';
+import { mergePnpmSettings } from '../src/pnpmWorkspaceSettings';
 
 describe('mergePnpmSettings', () => {
   it('returns defaults when overrides are undefined', () => {
@@ -28,11 +28,11 @@ describe('mergePnpmSettings', () => {
   it('appends array values', () => {
     expect(
       mergePnpmSettings(
-        { onlyBuiltDependencies: ['unrs-resolver'] },
-        { onlyBuiltDependencies: ['esbuild'] },
+        { trustPolicyExclude: ['jsii@5.9.33'] },
+        { trustPolicyExclude: ['esbuild@0.27.2'] },
       ),
     ).toEqual({
-      onlyBuiltDependencies: ['unrs-resolver', 'esbuild'],
+      trustPolicyExclude: ['jsii@5.9.33', 'esbuild@0.27.2'],
     });
   });
 
@@ -76,11 +76,11 @@ describe('mergePnpmSettings', () => {
     expect(
       mergePnpmSettings(
         { minimumReleaseAge: 4320 },
-        { neverBuiltDependencies: ['sharp'] },
+        { ignoredOptionalDependencies: ['sharp'] },
       ),
     ).toEqual({
       minimumReleaseAge: 4320,
-      neverBuiltDependencies: ['sharp'],
+      ignoredOptionalDependencies: ['sharp'],
     });
   });
 });

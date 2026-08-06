@@ -1,9 +1,11 @@
 import { cdk } from 'projen';
 import {
-  almaCdkConstructLibraryOptionsSchema,
-  branchOptionsSchema,
   CDK_DEFAULT_VERSION,
   CONSTRUCTS_DEFAULT_VERSION,
+} from '../../src/constants';
+import {
+  almaCdkConstructLibraryOptionsSchema,
+  branchOptionsSchema,
 } from '../../src/schemas/almaCdkConstructLibraryOptions';
 
 const validBaseOptions = {
@@ -67,9 +69,9 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       'https://github.com/alma-cdk/project.git',
     );
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('20');
+    expect(result.minNodeVersion).toBe('22');
     expect(result.workflowNodeVersion).toBe('24');
-    expect(result.maxNodeVersion).toBe('24');
+    expect(result.maxNodeVersion).toBe('26');
     expect(result.cdkVersion).toBe(CDK_DEFAULT_VERSION);
     expect(result.constructsVersion).toBe(CONSTRUCTS_DEFAULT_VERSION);
   });
@@ -78,9 +80,9 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse(validBaseOptions);
     expect(result.keywords).toEqual([]);
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('20');
+    expect(result.minNodeVersion).toBe('22');
     expect(result.workflowNodeVersion).toBe('24');
-    expect(result.maxNodeVersion).toBe('24');
+    expect(result.maxNodeVersion).toBe('26');
   });
 
   it('preserves codeCov when provided', () => {
@@ -287,7 +289,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse({
       ...validBaseOptions,
       pnpmSettings: {
-        onlyBuiltDependencies: ['unrs-resolver'],
+        allowBuilds: { 'unrs-resolver': true },
         linkWorkspacePackages: 'deep',
         verifyDepsBeforeRun: false,
         overrides: {
@@ -304,7 +306,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     });
 
     expect(result.pnpmSettings).toEqual({
-      onlyBuiltDependencies: ['unrs-resolver'],
+      allowBuilds: { 'unrs-resolver': true },
       linkWorkspacePackages: 'deep',
       verifyDepsBeforeRun: false,
       overrides: {
