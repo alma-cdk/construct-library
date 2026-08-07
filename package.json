@@ -84,7 +84,7 @@
     "packageManager": {
       "name": "pnpm",
       "version": "11.19.0",
-      "onFail": "ignore"
+      "onFail": "warn"
     }
   },
   "main": "lib/index.js",

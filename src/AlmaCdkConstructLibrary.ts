@@ -2,6 +2,7 @@ import { awscdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
 import { z } from 'zod';
 import {
+  DEV_ENGINES,
   JEST_VERSION,
   JSII_VERSION,
   PNPM_VERSION,
@@ -83,6 +84,7 @@ function buildAwsCdkConstructLibraryOptions(
     defaultReleaseBranch: 'main',
     packageManager: javascript.NodePackageManager.PNPM,
     pnpmVersion: PNPM_VERSION,
+    devEngines: DEV_ENGINES,
     pnpmOptions: {
       workspaceYamlOptions: buildPnpmWorkspaceYamlOptions(pnpmSettings),
     },

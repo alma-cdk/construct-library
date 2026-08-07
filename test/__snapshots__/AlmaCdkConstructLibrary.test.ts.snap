@@ -1883,7 +1883,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
     "devEngines": {
       "packageManager": {
         "name": "pnpm",
-        "onFail": "ignore",
+        "onFail": "warn",
         "version": "11.19.0",
       },
     },

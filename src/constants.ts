@@ -7,6 +7,8 @@
  * jsii assembly.
  */
 
+import type { javascript } from 'projen';
+
 /**
  * pnpm version used by the generated GitHub Actions workflows (`pnpm/action-setup`)
  * and pinned locally through the package.json `packageManager` field.
@@ -18,6 +20,24 @@ export const PNPM_VERSION = '11.19.0';
  * self-switch to `PNPM_VERSION` in the project directory.
  */
 export const PACKAGE_MANAGER = `pnpm@${PNPM_VERSION}`;
+
+/**
+ * Value written to the package.json `devEngines` field.
+ *
+ * Projen auto-populates `devEngines.packageManager` from the configured package
+ * manager but hardcodes `onFail: "ignore"`, so a mismatched pnpm version passes
+ * silently. Passing this object as the `devEngines` option replaces that
+ * auto-populated entry (projen merges the option over its own default), so a
+ * pnpm version other than `PNPM_VERSION` is surfaced as a warning rather than
+ * going unnoticed — without hard-failing the install.
+ */
+export const DEV_ENGINES = {
+  packageManager: {
+    name: 'pnpm',
+    version: PNPM_VERSION,
+    onFail: 'warn',
+  },
+} as const satisfies javascript.DevEngines;
 
 /** Command used to invoke projen. */
 export const PROJEN_COMMAND = 'pnpm exec projen';

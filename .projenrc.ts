@@ -1,6 +1,7 @@
 import { cdk, javascript } from 'projen';
 import { UpdateSnapshot } from 'projen/lib/javascript';
 import {
+  DEV_ENGINES,
   JEST_VERSION,
   JSII_VERSION,
   NODEJS_MAX_VERSION,
@@ -28,6 +29,7 @@ const project = new cdk.JsiiProject({
   projenCommand: PROJEN_COMMAND,
   packageManager: javascript.NodePackageManager.PNPM,
   pnpmVersion: PNPM_VERSION,
+  devEngines: DEV_ENGINES,
   pnpmOptions: {
     workspaceYamlOptions: buildPnpmWorkspaceYamlOptions(),
   },
