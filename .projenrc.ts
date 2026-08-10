@@ -36,6 +36,7 @@ const project = new cdk.JsiiProject({
   npmAccess: javascript.NpmAccess.PUBLIC,
   npmTrustedPublishing: true,
   jsiiVersion: JSII_VERSION,
+  typescriptVersion: TYPESCRIPT_VERSION,
   jestOptions: {
     jestVersion: JEST_VERSION,
     updateSnapshot: UpdateSnapshot.NEVER,
@@ -56,7 +57,6 @@ const project = new cdk.JsiiProject({
   peerDeps: ['constructs@^10.7.2', 'projen@^0.101.23'],
   bundledDeps: ['zod@4', 'semver@7'],
   devDeps: [
-    `typescript@${TYPESCRIPT_VERSION}`,
     '@types/semver@^7',
     'json-schema-to-typescript@^15',
   ],
