@@ -1157,7 +1157,7 @@ dist/**/*
       {
         "name": "typescript",
         "type": "build",
-        "version": "^5.9",
+        "version": "^6.0.2",
       },
       {
         "name": "aws-cdk-lib",
@@ -1878,7 +1878,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "projen": "*",
       "ts-jest": "^29",
       "ts-node": "*",
-      "typescript": "^5.9",
+      "typescript": "^6.0.2",
     },
     "devEngines": {
       "packageManager": {

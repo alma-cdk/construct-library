@@ -49,7 +49,7 @@ export const JSII_VERSION = '~6.0.7';
 export const JEST_VERSION = '^30';
 
 /** TypeScript version (projen would otherwise default to a much older release). */
-export const TYPESCRIPT_VERSION = '^5.9';
+export const TYPESCRIPT_VERSION = '^6.0.2';
 
 /** Minimum supported Node.js version. */
 export const NODEJS_MIN_VERSION = '22';
