@@ -224,6 +224,85 @@ test('sonar-project.properties derives organization from repository owner for un
   expect(sonarProjectProperties).toContain('sonar.organization=alma-cdk');
 });
 
+describe('next major release branch', () => {
+  it('is created from majorVersion without any releaseBranches option', () => {
+    const snapshot = synthProject({ majorVersion: 3 });
+    const workflow = snapshot['.github/workflows/release-4.x.yml'] as string;
+
+    expect(workflow).toBeDefined();
+    expect(workflow).toContain('name: release-4.x');
+    expect(workflow).toContain('      - 4.x');
+    expect(workflow).toContain('NPM_DIST_TAG: beta');
+  });
+
+  it('prepares the release task with the next major and beta prerelease', () => {
+    const snapshot = synthProject({ majorVersion: 3 });
+    const tasks = snapshot['.projen/tasks.json'] as {
+      tasks: Record<string, { env: Record<string, string> }>;
+    };
+
+    expect(tasks.tasks['release:4.x'].env).toMatchObject({
+      RELEASE: 'true',
+      MAJOR: '4',
+      PRERELEASE: 'beta',
+    });
+  });
+
+  it('keeps the default branch releasing the current major as latest', () => {
+    const snapshot = synthProject({ majorVersion: 3 });
+    const tasks = snapshot['.projen/tasks.json'] as {
+      tasks: Record<string, { env: Record<string, string> }>;
+    };
+
+    expect(tasks.tasks.release.env).toMatchObject({
+      RELEASE: 'true',
+      MAJOR: '3',
+    });
+    expect(tasks.tasks.release.env.PRERELEASE).toBeUndefined();
+  });
+
+  it('adds downstream releaseBranches alongside the default one', () => {
+    const snapshot = synthProject({
+      majorVersion: 3,
+      releaseBranches: {
+        'legacy-2.x': { majorVersion: 2, npmDistTag: 'legacy' },
+      },
+    });
+
+    expect(snapshot['.github/workflows/release-4.x.yml']).toBeDefined();
+    expect(snapshot['.github/workflows/release-legacy-2.x.yml']).toContain(
+      'NPM_DIST_TAG: legacy',
+    );
+  });
+
+  it('lets downstream override the next major branch configuration', () => {
+    const snapshot = synthProject({
+      majorVersion: 3,
+      releaseBranches: {
+        '4.x': { majorVersion: 4, prerelease: 'rc', npmDistTag: 'next' },
+      },
+    });
+    const tasks = snapshot['.projen/tasks.json'] as {
+      tasks: Record<string, { env: Record<string, string> }>;
+    };
+
+    expect(tasks.tasks['release:4.x'].env).toMatchObject({
+      MAJOR: '4',
+      PRERELEASE: 'rc',
+    });
+    expect(snapshot['.github/workflows/release-4.x.yml']).toContain(
+      'NPM_DIST_TAG: next',
+    );
+  });
+
+  it('tracks majorVersion so the beta branch follows it', () => {
+    const snapshot = synthProject({ majorVersion: 10 });
+
+    expect(snapshot['.github/workflows/release-11.x.yml']).toBeDefined();
+    expect(snapshot['.github/workflows/release-10.x.yml']).toBeUndefined();
+  });
+});
+
 test('sonar-project.properties appends sonarProjectPropertiesExtraLines', () => {
   const sonarProjectPropertiesExtraLines = [
     'sonar.issue.ignore.multicriteria=e1',

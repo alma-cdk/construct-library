@@ -1449,7 +1449,7 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.author">author</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.authorAddress">authorAddress</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.description">description</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.majorVersion">majorVersion</a></code> | <code>number</code> | Current major version released from the default branch. |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.name">name</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.repositoryUrl">repositoryUrl</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.stability">stability</a></code> | <code>projen.cdk.Stability</code> | *No description.* |
@@ -1467,7 +1467,7 @@ const almaCdkConstructLibraryOptions: AlmaCdkConstructLibraryOptions = { ... }
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.peerDeps">peerDeps</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.pnpmSettings">pnpmSettings</a></code> | <code><a href="#@alma-cdk/construct-library.PnpmWorkspaceSpecification">PnpmWorkspaceSpecification</a></code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.python">python</a></code> | <code>boolean</code> | *No description.* |
-| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseBranches">releaseBranches</a></code> | <code>{[ key: string ]: projen.release.BranchOptions}</code> | *No description.* |
+| <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseBranches">releaseBranches</a></code> | <code>{[ key: string ]: projen.release.BranchOptions}</code> | Extra release branches, merged on top of the default `${majorVersion + 1}.x` beta branch. Keying an entry with that same branch name replaces the default configuration for it. |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.releaseEnvironment">releaseEnvironment</a></code> | <code>string</code> | *No description.* |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.sonarProjectPropertiesExtraLines">sonarProjectPropertiesExtraLines</a></code> | <code>string[]</code> | Appended to generated `sonar-project.properties` after the default lines (e.g. Sonar multicriteria ignores). |
 | <code><a href="#@alma-cdk/construct-library.AlmaCdkConstructLibraryOptions.property.workflowNodeVersion">workflowNodeVersion</a></code> | <code>string</code> | *No description.* |
@@ -1511,6 +1511,10 @@ public readonly majorVersion: number;
 ```
 
 - *Type:* number
+
+Current major version released from the default branch.
+
+Also derives the next major version (`majorVersion + 1`) and its `${majorVersion + 1}.x` beta release branch.
 
 ---
 
@@ -1699,6 +1703,8 @@ public readonly releaseBranches: {[ key: string ]: BranchOptions};
 ```
 
 - *Type:* {[ key: string ]: projen.release.BranchOptions}
+
+Extra release branches, merged on top of the default `${majorVersion + 1}.x` beta branch. Keying an entry with that same branch name replaces the default configuration for it.
 
 ---
 

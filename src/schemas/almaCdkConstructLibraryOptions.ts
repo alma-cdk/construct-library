@@ -65,6 +65,7 @@ export const branchOptionsSchema = z.object({
  */
 export interface AlmaCdkConstructLibraryOptions {
   readonly stability: cdk.Stability;
+  /** Current major version released from the default branch. Also derives the next major version (`majorVersion + 1`) and its `${majorVersion + 1}.x` beta release branch. */
   readonly majorVersion: number;
   readonly author: string;
   readonly authorAddress: string;
@@ -73,6 +74,7 @@ export interface AlmaCdkConstructLibraryOptions {
   readonly description: string;
   readonly keywords?: string[];
   readonly repositoryUrl: string;
+  /** Extra release branches, merged on top of the default `${majorVersion + 1}.x` beta branch. Keying an entry with that same branch name replaces the default configuration for it. */
   readonly releaseBranches?: Record<string, BranchOptions>;
   readonly releaseEnvironment?: string;
   readonly peerDeps?: string[];

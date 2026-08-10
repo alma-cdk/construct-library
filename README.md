@@ -63,6 +63,37 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
 
 8. Reinstall everything with `pnpm install`
 
+## Release branches
+
+`majorVersion` is required and defines what the default `main` branch releases as `latest`. From it the library also derives a release branch for the **next** major version, published as a `beta` prerelease under the `beta` npm dist-tag – so work on the next major can ship without moving `latest`:
+
+```ts
+const project = new AlmaCdkConstructLibrary({
+  // ...
+  majorVersion: 3, // `main` releases 3.x as `latest`, `4.x` branch releases 4.0.0-beta.N as `beta`
+});
+```
+
+Anything passed in `releaseBranches` is merged on top of that default, keyed by branch name:
+
+```ts
+releaseBranches: {
+  // added alongside the generated `4.x` branch
+  "legacy-2.x": { majorVersion: 2, npmDistTag: "legacy" },
+},
+```
+
+Using the next major branch name as the key replaces the generated configuration for it (the entry is taken as-is, not merged field by field):
+
+```ts
+releaseBranches: {
+  // replaces the default `4.x` beta configuration
+  "4.x": { majorVersion: 4, prerelease: "rc", npmDistTag: "next" },
+},
+```
+
+Note: downstream projects that previously declared the `${MAJOR_VERSION + 1}.x` branch by hand can now drop it – the generated default is identical.
+
 ## Upgrading pnpm
 
 The pnpm version is pinned by this library – both in the package.json `packageManager` field (used locally) and in the CI workflows – so it upgrades together with the library:

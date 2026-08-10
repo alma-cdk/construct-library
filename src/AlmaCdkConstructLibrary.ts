@@ -11,6 +11,7 @@ import {
 } from './constants';
 import { NodeConfig } from './NodeConfig';
 import { buildPnpmWorkspaceYamlOptions } from './pnpmWorkspaceSettings';
+import { buildReleaseBranches } from './releaseBranches';
 import {
   almaCdkConstructLibraryOptionsSchema,
   type AlmaCdkConstructLibraryOptions,
@@ -73,11 +74,20 @@ function buildPublishToGoOptions(repositoryUrl: string) {
 function buildAwsCdkConstructLibraryOptions(
   validatedOptions: ValidatedOptions,
 ): awscdk.AwsCdkConstructLibraryOptions {
-  const { golang, python, pnpmSettings, ...awsCdkConstructLibraryOptions } =
-    validatedOptions;
+  const {
+    golang,
+    python,
+    pnpmSettings,
+    releaseBranches,
+    ...awsCdkConstructLibraryOptions
+  } = validatedOptions;
 
   return {
     ...awsCdkConstructLibraryOptions,
+    releaseBranches: buildReleaseBranches(
+      validatedOptions.majorVersion,
+      releaseBranches,
+    ),
     // Package manager & projen
     projenCommand: PROJEN_COMMAND,
     authorOrganization: true,
