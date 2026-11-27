@@ -31,14 +31,7 @@ const project = new cdk.JsiiProject({
   pnpmVersion: PNPM_VERSION,
   devEngines: DEV_ENGINES,
   pnpmOptions: {
-    workspaceYamlOptions: buildPnpmWorkspaceYamlOptions({
-      overrides: {
-        // jest 30 depends on glob 10/13 (GHSA-3g3m-2fjr-6pw4) and, through
-        // test-exclude, on minimatch 10 (GHSA-g3hv-75wg-m249).
-        'glob@>=9.0.0 <14.0.2': '^14.0.2',
-        'minimatch@>=7.0.0 <11.0.1': '^11.0.1',
-      },
-    }),
+    workspaceYamlOptions: buildPnpmWorkspaceYamlOptions(),
   },
   npmAccess: javascript.NpmAccess.PUBLIC,
   npmTrustedPublishing: true,

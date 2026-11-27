@@ -180,6 +180,8 @@ test('pnpm-workspace.yaml contains hardened workspace defaults', () => {
   expect(workspaceConfig).toContain('nodeLinker: hoisted');
   expect(workspaceConfig).toContain('allowBuilds:');
   expect(workspaceConfig).toContain('blockExoticSubdeps: true');
+  expect(workspaceConfig).toContain('glob@>=9.0.0 <14.0.2: ^14.0.2');
+  expect(workspaceConfig).toContain('minimatch@>=7.0.0 <11.0.1: ^11.0.1');
 });
 
 test('pnpm-workspace.yaml merges pnpmSettings into defaults', () => {
