@@ -145,6 +145,7 @@ exports[`snapshot 1`] = `
 /.github/workflows/pull-request-lint.yml linguist-generated
 /.github/workflows/release-2.x.yml linguist-generated
 /.github/workflows/release.yml linguist-generated
+/.github/workflows/self-mutation.yml linguist-generated
 /.github/workflows/sonarcloud-report.yml linguist-generated
 /.github/workflows/upgrade-2.x.yml linguist-generated
 /.github/workflows/upgrade-main.yml linguist-generated
@@ -187,16 +188,16 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
@@ -213,7 +214,7 @@ jobs:
         working-directory: ./
       - name: Upload patch
         if: steps.self_mutation.outputs.self_mutation_happened
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: repo.patch
           path: repo.patch
@@ -229,47 +230,11 @@ jobs:
         continue-on-error: true
       - name: Upload artifact
         id: upload_artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: build-artifact
           path: dist
           overwrite: true
-  self-mutation:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    if: always() && needs.build.outputs.self_mutation_happened && !(github.event.pull_request.head.repo.full_name != github.repository)
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v6
-        with:
-          token: \${{ secrets.PROJEN_GITHUB_TOKEN }}
-          ref: \${{ github.event.pull_request.head.ref }}
-          repository: \${{ github.event.pull_request.head.repo.full_name }}
-      - name: Download patch
-        id: download_patch
-        uses: actions/download-artifact@v8
-        with:
-          name: repo.patch
-          path: \${{ runner.temp }}
-      - name: Apply patch
-        id: apply_patch
-        run: '[ -s \${{ runner.temp }}/repo.patch ] && git apply \${{ runner.temp }}/repo.patch || echo "Empty patch. Skipping."'
-      - name: Set git identity
-        id: set_git_identity
-        run: |-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: Push changes
-        id: push_changes
-        env:
-          PULL_REQUEST_REF: \${{ github.event.pull_request.head.ref }}
-        run: |-
-          git add .
-          git commit -s -m "chore: self mutation"
-          git push origin "HEAD:$PULL_REQUEST_REF"
   package-js:
     needs: build
     runs-on: ubuntu-latest
@@ -277,13 +242,13 @@ jobs:
       contents: read
     if: \${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -293,14 +258,14 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: \${{ github.event.pull_request.head.ref }}
+          ref: \${{ github.event.pull_request.head.sha }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -325,16 +290,16 @@ jobs:
       contents: read
     if: \${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: 3.x
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -344,14 +309,14 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: \${{ github.event.pull_request.head.ref }}
+          ref: \${{ github.event.pull_request.head.sha }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -376,17 +341,17 @@ jobs:
       contents: read
     if: \${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7.0.0
         with:
           go-version: ^1.18.0
           cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -396,14 +361,14 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: \${{ github.event.pull_request.head.ref }}
+          ref: \${{ github.event.pull_request.head.sha }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -440,11 +405,11 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: write
+      pull-requests: read
     if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
     steps:
-      - id: auto_5940c89f
-        uses: amannn/action-semantic-pull-request@v6
+      - id: validate-pr-title
+        uses: amannn/action-semantic-pull-request@v6.1.2
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         with:
@@ -453,6 +418,19 @@ jobs:
             fix
             chore
           requireScope: false
+  pull-request-lint:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions: {}
+    if: always()
+    steps:
+      - name: validate result
+        id: validate_result
+        run: echo \${{ needs.validate.result }}
+      - name: Set status based on pull request checks
+        id: set_status_based_on_pull_request_checks
+        if: \${{ (needs.validate.result != 'success' && needs.validate.result != 'skipped') }}
+        run: exit 1
 ",
   ".github/workflows/release-2.x.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
@@ -485,7 +463,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set git identity
@@ -495,12 +473,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Setup Node.js
         id: setup_node_js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
@@ -532,7 +510,7 @@ jobs:
       - name: Upload artifact
         id: upload_artifact
         if: \${{ steps.git_remote.outputs.latest_commit == github.sha }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: build-artifact
           path: dist
@@ -550,13 +528,13 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -568,8 +546,13 @@ jobs:
         id: release
         if: \${{ !inputs.dry_run }}
         env:
+          RELEASE_TAG_FILE: dist/releasetag.txt
+          CHANGELOG_FILE: dist/changelog.md
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: errout=$(mktemp); gh release create $(cat dist/releasetag.txt) -R $GITHUB_REPOSITORY -F dist/changelog.md -t $(cat dist/releasetag.txt) --target $GITHUB_SHA -p 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi
+        run: |-
+          tag=$(cat "$RELEASE_TAG_FILE") &&
+          gh release view "$tag" -R "$GITHUB_REPOSITORY" 2>/dev/null ||
+          gh release create "$tag" -R "$GITHUB_REPOSITORY" -F "$CHANGELOG_FILE" -t "$tag" --target "$GITHUB_SHA" --prerelease
   release_npm:
     name: Publish to npm
     needs: release
@@ -580,13 +563,13 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -596,12 +579,12 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           path: .repo
       - name: Install Dependencies
@@ -627,7 +610,7 @@ jobs:
           NPM_CONFIG_PROVENANCE: "true"
           NPM_TRUSTED_PUBLISHER: "true"
           PUBLIB_DRYRUN: \${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-npm
+        run: npx '-p' 'publib@latest' 'publib-npm'
   release_pypi:
     name: Publish to PyPI
     needs: release
@@ -638,16 +621,16 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: 3.x
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -657,12 +640,12 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           path: .repo
       - name: Install Dependencies
@@ -685,7 +668,7 @@ jobs:
         env:
           PYPI_TRUSTED_PUBLISHER: "true"
           PUBLIB_DRYRUN: \${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-pypi
+        run: npx '-p' 'publib@latest' 'publib-pypi'
   release_golang:
     name: Publish to GitHub Go Module Repository
     needs: release
@@ -695,17 +678,17 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7.0.0
         with:
           go-version: ^1.18.0
           cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -715,12 +698,12 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           path: .repo
       - name: Install Dependencies
@@ -745,7 +728,7 @@ jobs:
           GIT_USER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GITHUB_TOKEN: \${{ secrets.GO_GITHUB_TOKEN }}
           PUBLIB_DRYRUN: \${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-golang
+        run: npx '-p' 'publib@latest' 'publib-golang'
 ",
   ".github/workflows/release.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
@@ -778,7 +761,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Set git identity
@@ -788,12 +771,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Setup Node.js
         id: setup_node_js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
@@ -825,7 +808,7 @@ jobs:
       - name: Upload artifact
         id: upload_artifact
         if: \${{ steps.git_remote.outputs.latest_commit == github.sha }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: build-artifact
           path: dist
@@ -843,13 +826,13 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -861,8 +844,13 @@ jobs:
         id: release
         if: \${{ !inputs.dry_run }}
         env:
+          RELEASE_TAG_FILE: dist/releasetag.txt
+          CHANGELOG_FILE: dist/changelog.md
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-        run: errout=$(mktemp); gh release create $(cat dist/releasetag.txt) -R $GITHUB_REPOSITORY -F dist/changelog.md -t $(cat dist/releasetag.txt) --target $GITHUB_SHA 2> $errout && true; exitcode=$?; if [ $exitcode -ne 0 ] && ! grep -q "Release.tag_name already exists" $errout; then cat $errout; exit $exitcode; fi
+        run: |-
+          tag=$(cat "$RELEASE_TAG_FILE") &&
+          gh release view "$tag" -R "$GITHUB_REPOSITORY" 2>/dev/null ||
+          gh release create "$tag" -R "$GITHUB_REPOSITORY" -F "$CHANGELOG_FILE" -t "$tag" --target "$GITHUB_SHA"
   release_npm:
     name: Publish to npm
     needs: release
@@ -873,13 +861,13 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -889,12 +877,12 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           path: .repo
       - name: Install Dependencies
@@ -920,7 +908,7 @@ jobs:
           NPM_CONFIG_PROVENANCE: "true"
           NPM_TRUSTED_PUBLISHER: "true"
           PUBLIB_DRYRUN: \${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-npm
+        run: npx '-p' 'publib@latest' 'publib-npm'
   release_pypi:
     name: Publish to PyPI
     needs: release
@@ -931,16 +919,16 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: 3.x
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -950,12 +938,12 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           path: .repo
       - name: Install Dependencies
@@ -978,7 +966,7 @@ jobs:
         env:
           PYPI_TRUSTED_PUBLISHER: "true"
           PUBLIB_DRYRUN: \${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-pypi
+        run: npx '-p' 'publib@latest' 'publib-pypi'
   release_golang:
     name: Publish to GitHub Go Module Repository
     needs: release
@@ -988,17 +976,17 @@ jobs:
     environment: production
     if: needs.release.outputs.tag_exists != 'true' && needs.release.outputs.latest_commit == github.sha
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7.0.0
         with:
           go-version: ^1.18.0
           cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           artifact-ids: \${{ needs.release.outputs.artifact_id }}
           path: dist
@@ -1008,12 +996,12 @@ jobs:
         continue-on-error: true
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           path: .repo
       - name: Install Dependencies
@@ -1038,7 +1026,71 @@ jobs:
           GIT_USER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GITHUB_TOKEN: \${{ secrets.GO_GITHUB_TOKEN }}
           PUBLIB_DRYRUN: \${{ inputs.dry_run }}
-        run: npx -p publib@latest publib-golang
+        run: npx '-p' 'publib@latest' 'publib-golang'
+",
+  ".github/workflows/self-mutation.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
+
+name: self-mutation
+on:
+  workflow_run:
+    workflows:
+      - build
+    types:
+      - completed
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    outputs:
+      has_patch: \${{ steps.find_patch.outputs.has_patch }}
+    if: "github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.event == 'pull_request' && !startsWith(github.event.workflow_run.head_commit.message, 'chore: self mutation') && github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.head_branch != github.event.repository.default_branch"
+    steps:
+      - name: Find patch
+        id: find_patch
+        env:
+          GH_TOKEN: \${{ github.token }}
+          RUN_ID: \${{ github.event.workflow_run.id }}
+        run: echo "has_patch=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/artifacts?name=repo.patch" --jq '.total_count > 0')" >> $GITHUB_OUTPUT
+  self-mutation:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    if: needs.check.outputs.has_patch == 'true'
+    steps:
+      - name: Download patch
+        id: download_patch
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: repo.patch
+          path: \${{ runner.temp }}
+          github-token: \${{ github.token }}
+          run-id: \${{ github.event.workflow_run.id }}
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          token: \${{ secrets.PROJEN_GITHUB_TOKEN }}
+          ref: \${{ github.event.workflow_run.head_sha }}
+          repository: \${{ github.event.workflow_run.head_repository.full_name }}
+      - name: Apply patch
+        id: apply_patch
+        run: git apply \${{ runner.temp }}/repo.patch
+      - name: Set git identity
+        id: set_git_identity
+        run: |-
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Push changes
+        id: push_changes
+        env:
+          HEAD_BRANCH: \${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: \${{ github.event.workflow_run.head_sha }}
+        run: |-
+          git add .
+          git commit -s -m "chore: self mutation"
+          git push --force-with-lease="refs/heads/$HEAD_BRANCH:$HEAD_SHA" origin "HEAD:refs/heads/$HEAD_BRANCH"
 ",
   ".github/workflows/sonarcloud-report.yml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
@@ -1061,17 +1113,17 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Setup Node.js
         id: setup_node_js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
@@ -1106,17 +1158,17 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: 2.x
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Setup Node.js
         id: setup_node_js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
@@ -1136,7 +1188,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.create_patch.outputs.patch_created
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: repo.patch
           path: repo.patch
@@ -1151,12 +1203,12 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: 2.x
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -1170,7 +1222,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Create Pull Request
         id: create-pr
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@v8.1.3
         with:
           token: \${{ secrets.PROJEN_GITHUB_TOKEN }}
           commit-message: |-
@@ -1215,17 +1267,17 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: main
       - name: Setup pnpm
         id: setup_pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
-          version: 11.19.0
+          version: 12.23.0
       - name: Setup Node.js
         id: setup_node_js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
@@ -1245,7 +1297,7 @@ jobs:
       - name: Upload patch
         id: upload_patch
         if: steps.create_patch.outputs.patch_created
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: repo.patch
           path: repo.patch
@@ -1260,12 +1312,12 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: main
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: repo.patch
           path: \${{ runner.temp }}
@@ -1279,7 +1331,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Create Pull Request
         id: create-pr
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@v8.1.3
         with:
           token: \${{ secrets.PROJEN_GITHUB_TOKEN }}
           commit-message: |-
@@ -1316,7 +1368,7 @@ jobs:
 !/package.json
 !/LICENSE
 !/.npmignore
-logs
+/logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -1352,6 +1404,7 @@ TODO.md
 junit.xml
 /coverage/
 !/.github/workflows/build.yml
+!/.github/workflows/self-mutation.yml
 /dist/changelog.md
 /dist/version.txt
 !/.github/workflows/release.yml
@@ -1487,7 +1540,7 @@ dist/**/*
       {
         "name": "commit-and-tag-version",
         "type": "build",
-        "version": "^12",
+        "version": "^13",
       },
       {
         "name": "eslint-config-prettier",
@@ -1587,6 +1640,7 @@ dist/**/*
       ".github/workflows/pull-request-lint.yml",
       ".github/workflows/release-2.x.yml",
       ".github/workflows/release.yml",
+      ".github/workflows/self-mutation.yml",
       ".github/workflows/sonarcloud-report.yml",
       ".github/workflows/upgrade-2.x.yml",
       ".github/workflows/upgrade-main.yml",
@@ -1642,7 +1696,7 @@ dist/**/*
         "description": "Bumps version based on latest git tag and generates a changelog entry",
         "env": {
           "BUMPFILE": "dist/version.txt",
-          "BUMP_PACKAGE": "commit-and-tag-version@^12",
+          "BUMP_PACKAGE": "commit-and-tag-version@^13",
           "CHANGELOG": "dist/changelog.md",
           "OUTFILE": "package.json",
           "RELEASETAG": "dist/releasetag.txt",
@@ -1682,30 +1736,39 @@ dist/**/*
         "description": "hard resets to HEAD of origin and cleans the local repo",
         "env": {
           "BRANCH": "$(git branch --show-current)",
+          "HEAD_COMMIT": "$(git rev-parse --short HEAD)",
         },
         "name": "clobber",
         "steps": [
           {
-            "exec": "git checkout -b scratch",
-            "name": "save current HEAD in "scratch" branch",
+            "exec": "git checkout -B "scratch-$HEAD_COMMIT"",
+            "name": "save current HEAD in a "scratch-<commit>" branch",
           },
           {
-            "exec": "git checkout $BRANCH",
+            "exec": "git checkout "$BRANCH"",
           },
           {
-            "exec": "git fetch origin",
+            "execArgs": [
+              "git",
+              "fetch",
+              "origin",
+            ],
             "name": "fetch latest changes from origin",
           },
           {
-            "exec": "git reset --hard origin/$BRANCH",
+            "exec": "git reset --hard "origin/$BRANCH"",
             "name": "hard reset to origin commit",
           },
           {
-            "exec": "git clean -fdx",
+            "execArgs": [
+              "git",
+              "clean",
+              "-fdx",
+            ],
             "name": "clean all untracked files",
           },
           {
-            "say": "ready to rock! (unpushed commits are under the "scratch" branch)",
+            "say": "ready to rock! (unpushed commits are under a "scratch-<commit>" branch)",
           },
         ],
       },
@@ -1714,9 +1777,13 @@ dist/**/*
         "name": "compat",
         "steps": [
           {
-            "exec": "jsii-diff npm:$(node -p "require('./package.json').name") -k --ignore-file .compatignore || (echo "
-UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .compatignore to skip.
-" && exit 1)",
+            "execArgs": [
+              "jsii-diff",
+              "npm:@alma-cdk/project",
+              "-k",
+              "--ignore-file",
+              ".compatignore",
+            ],
           },
         ],
       },
@@ -1777,7 +1844,19 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "name": "eslint",
         "steps": [
           {
-            "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern $@ src test build-tools projenrc .projenrc.ts",
+            "execArgs": [
+              "eslint",
+              "--ext",
+              ".ts,.tsx",
+              "--fix",
+              "--no-error-on-unmatched-pattern",
+              "$@",
+              "src",
+              "test",
+              "build-tools",
+              "projenrc",
+              ".projenrc.ts",
+            ],
             "receiveArgs": true,
           },
         ],
@@ -1903,6 +1982,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "name": "pre-compile",
       },
       "release": {
+        "condition": "git log --oneline -1 | grep -v "chore(release):" > /dev/null",
         "description": "Prepare a release from "main" branch",
         "env": {
           "MAJOR": "1",
@@ -1911,7 +1991,11 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "name": "release",
         "steps": [
           {
-            "exec": "rm -fr dist",
+            "execArgs": [
+              "rm",
+              "-fr",
+              "dist",
+            ],
           },
           {
             "spawn": "bump",
@@ -1928,6 +2012,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         ],
       },
       "release:2.x": {
+        "condition": "git log --oneline -1 | grep -v "chore(release):" > /dev/null",
         "description": "Prepare a release from "2.x" branch",
         "env": {
           "MAJOR": "2",
@@ -1937,7 +2022,11 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "name": "release:2.x",
         "steps": [
           {
-            "exec": "rm -fr dist",
+            "execArgs": [
+              "rm",
+              "-fr",
+              "dist",
+            ],
           },
           {
             "spawn": "bump",
@@ -1958,7 +2047,11 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "name": "test",
         "steps": [
           {
-            "exec": "jest --passWithNoTests --ci",
+            "execArgs": [
+              "jest",
+              "--passWithNoTests",
+              "--ci",
+            ],
             "receiveArgs": true,
           },
           {
@@ -1971,7 +2064,12 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "name": "test:update",
         "steps": [
           {
-            "exec": "jest --updateSnapshot --passWithNoTests --ci",
+            "execArgs": [
+              "jest",
+              "--updateSnapshot",
+              "--passWithNoTests",
+              "--ci",
+            ],
             "receiveArgs": true,
           },
         ],
@@ -1981,7 +2079,10 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "name": "test:watch",
         "steps": [
           {
-            "exec": "jest --watch",
+            "execArgs": [
+              "jest",
+              "--watch",
+            ],
           },
         ],
       },
@@ -1989,7 +2090,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
         "description": "Restores version to 0.0.0",
         "env": {
           "BUMPFILE": "dist/version.txt",
-          "BUMP_PACKAGE": "commit-and-tag-version@^12",
+          "BUMP_PACKAGE": "commit-and-tag-version@^13",
           "CHANGELOG": "dist/changelog.md",
           "OUTFILE": "package.json",
           "RELEASETAG": "dist/releasetag.txt",
@@ -2294,7 +2395,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "@typescript-eslint/eslint-plugin": "^8",
       "@typescript-eslint/parser": "^8",
       "aws-cdk-lib": "2.260.0",
-      "commit-and-tag-version": "^12",
+      "commit-and-tag-version": "^13",
       "constructs": "10.7.2",
       "eslint": "^9",
       "eslint-config-prettier": "*",
@@ -2318,11 +2419,11 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
       "packageManager": {
         "name": "pnpm",
         "onFail": "warn",
-        "version": "11.19.0",
+        "version": "12.23.0",
       },
     },
     "engines": {
-      "node": ">= 22 <= 26",
+      "node": ">= 22.13.0 <= 26",
     },
     "jest": {
       "clearMocks": true,
@@ -2392,7 +2493,7 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
     "license": "Apache-2.0",
     "main": "lib/index.js",
     "name": "@alma-cdk/project",
-    "packageManager": "pnpm@11.19.0",
+    "packageManager": "pnpm@12.23.0",
     "peerDependencies": {
       "aws-cdk-lib": "^2.260.0",
       "constructs": "^10.7.2",
@@ -2441,6 +2542,9 @@ UNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .c
   },
   "pnpm-workspace.yaml": "# ~~ Generated by projen. To modify, edit .projenrc.ts and run "pnpm exec projen".
 
+overrides:
+  glob@>=9.0.0 <14.0.2: ^14.0.2
+  minimatch@>=7.0.0 <11.0.1: ^11.0.1
 nodeLinker: hoisted
 strictDepBuilds: true
 resolutionMode: highest
@@ -2459,6 +2563,7 @@ trustPolicyExclude:
   - jsii-rosetta@6.0.9
 allowBuilds:
   unrs-resolver: true
+  "@parcel/watcher": false
 blockExoticSubdeps: true
 trustPolicyIgnoreAfter: 20160
 ",
@@ -2483,11 +2588,27 @@ sonar.javascript.lcov.reportPaths=./coverage/lcov.info
 sonar.sources=./src
 sonar.tests=./test
 sonar.test.inclusions=**/*.test.*",
-  "src/index.ts": "export class Hello {
-  public sayHello() {
-    return 'hello, world!';
+  "src/index.ts": "import { Construct } from 'constructs';
+
+export class MyConstruct extends Construct {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+
+    // define resources here...
   }
 }",
+  "test/my-construct.test.ts": "import { App, Stack } from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import { MyConstruct } from '../src';
+
+test('Snapshot', () => {
+  const app = new App();
+  const stack = new Stack(app, 'test');
+  new MyConstruct(stack, 'MyConstruct');
+
+  const template = Template.fromStack(stack);
+  expect(template.toJSON()).toMatchSnapshot();
+});",
   "test/tsconfig.json": {
     "compilerOptions": {
       "isolatedModules": true,

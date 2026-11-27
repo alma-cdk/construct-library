@@ -69,7 +69,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       'https://github.com/alma-cdk/project.git',
     );
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('22');
+    expect(result.minNodeVersion).toBe('22.13.0');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('26');
     expect(result.cdkVersion).toBe(CDK_DEFAULT_VERSION);
@@ -80,7 +80,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse(validBaseOptions);
     expect(result.keywords).toEqual([]);
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('22');
+    expect(result.minNodeVersion).toBe('22.13.0');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('26');
   });
@@ -180,6 +180,32 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
         minNodeVersion: '18',
         workflowNodeVersion: '24',
         maxNodeVersion: '20',
+      }),
+    ).toThrow('Node versions must satisfy min <= workflow <= max');
+  });
+
+  it.each([
+    { workflowNodeVersion: '22' },
+    { workflowNodeVersion: '22.13.0' },
+    { workflowNodeVersion: '22', maxNodeVersion: '22' },
+    { workflowNodeVersion: '22', maxNodeVersion: '22.13.0' },
+  ])('accepts %j with the default minimum', (versions) => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      ...versions,
+    });
+    expect(result).toMatchObject(versions);
+  });
+
+  it.each([
+    { workflowNodeVersion: '22.12.0' },
+    { workflowNodeVersion: '21' },
+    { workflowNodeVersion: '22', maxNodeVersion: '22.12.0' },
+  ])('rejects %j below the default minimum', (versions) => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        ...versions,
       }),
     ).toThrow('Node versions must satisfy min <= workflow <= max');
   });
@@ -338,6 +364,19 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
         pnpmSettings: {
           imaginarySetting: true,
         },
+      }),
+    ).toThrow();
+  });
+
+  it.each([
+    'packageManagerStrict',
+    'packageManagerStrictVersion',
+    'managePackageManagerVersions',
+  ])('rejects pnpmSettings.%s, which pnpm v12 does not recognize', (key) => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        pnpmSettings: { [key]: true },
       }),
     ).toThrow();
   });

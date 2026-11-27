@@ -51,8 +51,18 @@ const DEFAULT_PNPM_SETTINGS: PnpmWorkspaceSpecification = {
   // Replaces `onlyBuiltDependencies`, which pnpm v11 ignores.
   allowBuilds: {
     'unrs-resolver': true, // needed by Jest
+    // Jest's watcher ships prebuilt binaries; its install script only builds
+    // from source when `npm_config_build_from_source` is set.
+    '@parcel/watcher': false,
   },
   blockExoticSubdeps: true,
+  // Jest 30 depends on glob 10/13 (GHSA-3g3m-2fjr-6pw4) and, through
+  // test-exclude, on minimatch 10 (GHSA-g3hv-75wg-m249). The ranges match
+  // only vulnerable versions, so the overrides stop applying once Jest moves on.
+  overrides: {
+    'glob@>=9.0.0 <14.0.2': '^14.0.2',
+    'minimatch@>=7.0.0 <11.0.1': '^11.0.1',
+  },
 };
 
 /**

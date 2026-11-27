@@ -31,6 +31,18 @@ const versionStringSchema = z.string().refine(
   { message: 'Must be a valid semver or coercible to one' },
 );
 
+/**
+ * Whether `version` is `lower` or later. A partial version resolves to the
+ * latest release it matches, so `22` is not below `22.13.0`.
+ */
+function isAtLeast(version: string, lower: semver.SemVer): boolean {
+  const coerced = coerceValidSemver(version);
+  return (
+    coerced != null &&
+    (semver.gte(coerced, lower) || semver.satisfies(lower, version))
+  );
+}
+
 function validateNodeVersionOrder(opts: {
   minNodeVersion: string;
   maxNodeVersion: string;
@@ -41,9 +53,9 @@ function validateNodeVersionOrder(opts: {
   const workflow = coerceValidSemver(opts.workflowNodeVersion);
   if (min == null || max == null || workflow == null) return true; // let field-level validation handle invalid semver
   return (
-    semver.lte(min, max) &&
-    semver.lte(min, workflow) &&
-    semver.lte(workflow, max)
+    isAtLeast(opts.maxNodeVersion, min) &&
+    isAtLeast(opts.workflowNodeVersion, min) &&
+    isAtLeast(opts.maxNodeVersion, workflow)
   );
 }
 

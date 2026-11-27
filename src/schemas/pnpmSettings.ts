@@ -119,12 +119,9 @@ export const pnpmSettingsSchema = z.object({
   recursiveInstall: z.boolean().optional(),
   engineStrict: z.boolean().optional(),
   npmPath: z.string().optional(),
-  // Kept even though pnpm v11 enforces the `packageManager` field
-  // unconditionally: these are read by the older pnpm a project may be
-  // launched with, which is exactly when they matter.
-  packageManagerStrict: z.boolean().optional(),
-  packageManagerStrictVersion: z.boolean().optional(),
-  managePackageManagerVersions: z.boolean().optional(),
+  // No `packageManagerStrict`, `packageManagerStrictVersion` or
+  // `managePackageManagerVersions`: pnpm v12 fails every command on a
+  // workspace setting it does not recognize when the pinned version runs.
   ignoreScripts: z.boolean().optional(),
   childConcurrency: z.number().optional(),
   sideEffectsCache: z.boolean().optional(),

@@ -40,6 +40,23 @@ const project = new cdk.JsiiProject({
   jestOptions: {
     jestVersion: JEST_VERSION,
     updateSnapshot: UpdateSnapshot.NEVER,
+    jestConfig: {
+      // The tests import projen, which requires the ESM-only `dax` package.
+      // Jest can only load ESM from `require()` on Node.js 24.9 or later,
+      // so compile it to CommonJS for the tests to run on Node.js 22 too.
+      transform: {
+        '^.+\\.js$': new javascript.Transform('babel-jest', {
+          babelrc: false,
+          configFile: false,
+          plugins: ['@babel/plugin-transform-modules-commonjs'],
+        }),
+      },
+      // Skips node_modules except dax and its ESM-only dependencies, which
+      // projen nests under its own node_modules.
+      transformIgnorePatterns: [
+        '/node_modules/(?!(dax|@dsherret|console-static-text)/)(?!.*/node_modules/)',
+      ],
+    },
   },
   gitignore: [
     '.DS_Store',
@@ -53,17 +70,21 @@ const project = new cdk.JsiiProject({
     '**/*~lock~',
   ],
 
-  deps: ['projen'],
-  peerDeps: ['constructs@^10.7.2', 'projen@^0.101.23'],
+  deps: ['projen@^0.105.8'],
+  peerDeps: ['constructs@^10.7.2', 'projen@^0.105.8'],
   bundledDeps: ['zod@4', 'semver@7'],
   devDeps: [
+    '@babel/plugin-transform-modules-commonjs@^7',
     '@types/semver@^7',
-    'json-schema-to-typescript@^15',
+    'json-schema-to-typescript@^16',
   ],
   minNodeVersion: NODEJS_MIN_VERSION,
   workflowNodeVersion: NODEJS_WORKFLOW_VERSION,
   maxNodeVersion: NODEJS_MAX_VERSION,
 });
+
+// Replaces the `^2` range that projen's Eslint component adds.
+project.addDevDeps('@stylistic/eslint-plugin@^6');
 
 project.addTask('format', {
   exec: 'prettier --write .',
