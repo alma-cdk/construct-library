@@ -184,6 +184,32 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     ).toThrow('Node versions must satisfy min <= workflow <= max');
   });
 
+  it.each([
+    { workflowNodeVersion: '22' },
+    { workflowNodeVersion: '22.13.0' },
+    { workflowNodeVersion: '22', maxNodeVersion: '22' },
+    { workflowNodeVersion: '22', maxNodeVersion: '22.13.0' },
+  ])('accepts %j with the default minimum', (versions) => {
+    const result = almaCdkConstructLibraryOptionsSchema.parse({
+      ...validBaseOptions,
+      ...versions,
+    });
+    expect(result).toMatchObject(versions);
+  });
+
+  it.each([
+    { workflowNodeVersion: '22.12.0' },
+    { workflowNodeVersion: '21' },
+    { workflowNodeVersion: '22', maxNodeVersion: '22.12.0' },
+  ])('rejects %j below the default minimum', (versions) => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        ...versions,
+      }),
+    ).toThrow('Node versions must satisfy min <= workflow <= max');
+  });
+
   it('accepts valid unscoped name', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse({
       ...validBaseOptions,
