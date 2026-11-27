@@ -4,6 +4,8 @@
 
 ### AlmaCdkConstructLibrary <a name="AlmaCdkConstructLibrary" id="@alma-cdk/construct-library.AlmaCdkConstructLibrary"></a>
 
+- *Implements:* constructs.IConstruct, constructs.IDependable
+
 #### Initializers <a name="Initializers" id="@alma-cdk/construct-library.AlmaCdkConstructLibrary.Initializer"></a>
 
 ```typescript

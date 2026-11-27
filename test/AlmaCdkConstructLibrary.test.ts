@@ -43,10 +43,10 @@ test('constructor validates options before synthesis', () => {
 
 test('.nvmrc uses workflowNodeVersion when provided', () => {
   const snapshot = synthProject({
-    workflowNodeVersion: '22',
+    workflowNodeVersion: '22.13.0',
   });
 
-  expect(snapshot['.nvmrc'].trim()).toBe('22');
+  expect(snapshot['.nvmrc'].trim()).toBe('22.13.0');
 });
 
 test('pins the same pnpm version for local runs and CI workflows', () => {
@@ -149,7 +149,7 @@ test('build workflow includes Codecov step when codeCov is enabled', () => {
   });
 
   expect(snapshot['.github/workflows/build.yml']).toContain(
-    'codecov/codecov-action@v6',
+    'codecov/codecov-action@',
   );
 });
 

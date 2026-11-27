@@ -51,6 +51,9 @@ const DEFAULT_PNPM_SETTINGS: PnpmWorkspaceSpecification = {
   // Replaces `onlyBuiltDependencies`, which pnpm v11 ignores.
   allowBuilds: {
     'unrs-resolver': true, // needed by Jest
+    // Jest's watcher ships prebuilt binaries; its install script only builds
+    // from source when `npm_config_build_from_source` is set.
+    '@parcel/watcher': false,
   },
   blockExoticSubdeps: true,
 };

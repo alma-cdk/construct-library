@@ -22,7 +22,7 @@ Custom [Projen Project Type](https://projen.io/docs/concepts/projects/building-y
     npm i -D @alma-cdk/construct-library
     ```
 
-2. If existing project, install `npm i -D projen@0.101.23` or newer
+2. If existing project, install `npm i -D projen@0.105.8` or newer
 
 2. Import the custom Projen project type:
     ```diff
@@ -118,8 +118,10 @@ Notes:
 
 - `pnpmSettings` only accepts settings that the pinned pnpm still supports, so options dropped by pnpm v11 are rejected at synth. Most notably, replace `onlyBuiltDependencies` with `allowBuilds: { '<package>': true }` – pnpm v11 ignores the former, skipping the builds (which fails the install under `strictDepBuilds`).
 
+- pnpm v12 fails every command when `pnpm-workspace.yaml` has a setting it does not recognize, so `pnpmSettings` also rejects `packageManagerStrict`, `packageManagerStrictVersion` and `managePackageManagerVersions`. Remove them from `pnpmSettings`.
+
 ## Upgrading downstream packages
 
 ```sh
-pnpm add -D @alma-cdk/construct-library@2.2 constructs@10.7 projen@0.101.23
+pnpm add -D @alma-cdk/construct-library@2.2 constructs@10.7 projen@0.105.8
 ```

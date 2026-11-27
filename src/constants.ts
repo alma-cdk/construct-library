@@ -13,7 +13,7 @@ import type { javascript } from 'projen';
  * pnpm version used by the generated GitHub Actions workflows (`pnpm/action-setup`)
  * and pinned locally through the package.json `packageManager` field.
  */
-export const PNPM_VERSION = '11.19.0';
+export const PNPM_VERSION = '12.23.0';
 
 /**
  * Value written to the package.json `packageManager` field, which makes pnpm
@@ -52,7 +52,7 @@ export const JEST_VERSION = '^30';
 export const TYPESCRIPT_VERSION = '^6.0.2';
 
 /** Minimum supported Node.js version. */
-export const NODEJS_MIN_VERSION = '22';
+export const NODEJS_MIN_VERSION = '22.13.0';
 
 /** Maximum supported Node.js version. */
 export const NODEJS_MAX_VERSION = '26';

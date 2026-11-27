@@ -69,7 +69,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
       'https://github.com/alma-cdk/project.git',
     );
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('22');
+    expect(result.minNodeVersion).toBe('22.13.0');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('26');
     expect(result.cdkVersion).toBe(CDK_DEFAULT_VERSION);
@@ -80,7 +80,7 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
     const result = almaCdkConstructLibraryOptionsSchema.parse(validBaseOptions);
     expect(result.keywords).toEqual([]);
     expect(result.codeCov).toBe(false);
-    expect(result.minNodeVersion).toBe('22');
+    expect(result.minNodeVersion).toBe('22.13.0');
     expect(result.workflowNodeVersion).toBe('24');
     expect(result.maxNodeVersion).toBe('26');
   });
@@ -338,6 +338,19 @@ describe('almaCdkConstructLibraryOptionsSchema', () => {
         pnpmSettings: {
           imaginarySetting: true,
         },
+      }),
+    ).toThrow();
+  });
+
+  it.each([
+    'packageManagerStrict',
+    'packageManagerStrictVersion',
+    'managePackageManagerVersions',
+  ])('rejects pnpmSettings.%s, which pnpm v12 does not recognize', (key) => {
+    expect(() =>
+      almaCdkConstructLibraryOptionsSchema.parse({
+        ...validBaseOptions,
+        pnpmSettings: { [key]: true },
       }),
     ).toThrow();
   });
